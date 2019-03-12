@@ -19,6 +19,9 @@ public class Chunk {
     private AtomicReferenceArray<TerrainChunkData>
             terrain = new AtomicReferenceArray<>(256);
 
+    private AtomicReferenceArray<Version>
+            versions = new AtomicReferenceArray<>(256);
+
     private volatile NBTChunkData entity, blockEntity;
 
     public Chunk(WorldData worldData, int x, int z, Dimension dimension) {
@@ -31,7 +34,7 @@ public class Chunk {
     public TerrainChunkData getTerrain(byte subChunk) throws Version.VersionException {
         TerrainChunkData data = terrain.get(subChunk & 0xff);
         if(data == null){
-            data = this.getVersion().createTerrainChunkData(this, subChunk);
+            data = this.getVersion(subChunk).createTerrainChunkData(this, subChunk);
             terrain.set(subChunk & 0xff, data);
         }
         return data;
@@ -49,17 +52,41 @@ public class Chunk {
     }
 
     public Version getVersion(){
-        if(this.version == null) try {
-            byte[] data = this.worldData.getChunkData(x, z, ChunkTag.VERSION, dimension, (byte) 0, false);
-            this.version = Version.getVersion(data);
-        } catch (WorldData.WorldDBLoadException | WorldData.WorldDBException e) {
-            e.printStackTrace();
-            this.version = Version.ERROR;
-        }
-
-        return this.version;
+        return this.getVersion((byte)0);
     }
 
+    public Version getVersion(byte subChunk){
+        Version vers = null;
+        byte[] rawData = null;
+        byte versionNo;
+        try {
+            vers = versions.get(subChunk);
+            if(vers == null) {
+                byte[] data = this.worldData.getChunkData(x, z, ChunkTag.VERSION, dimension, subChunk, false);
+
+                if(data == null || data.length <= 0)
+                    vers = Version.NULL;
+                else {
+                    versionNo = data[0];
+                    rawData = worldData.getChunkData(x, z, ChunkTag.TERRAIN, dimension, subChunk, true);
+
+                    // for some reason, the above read doesn't always work; in particular, for some newer newer chunks
+                    // in that case, continue relying on the NBT data
+                    if (rawData != null) {
+                        versionNo = rawData[0];
+                    }
+
+                    vers = Version.getVersion(versionNo);
+                }
+                versions.set(subChunk, vers);
+            }
+        } catch (WorldData.WorldDBLoadException | WorldData.WorldDBException e) {
+            e.printStackTrace();
+            vers = Version.ERROR;
+        }
+
+        return vers;
+    }
 
     //TODO: should we use the heightmap???
     public int getHighestBlockYAt(int x, int z) throws Version.VersionException {

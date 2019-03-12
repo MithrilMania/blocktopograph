@@ -44,33 +44,34 @@ public class SatelliteRenderer implements MapRenderer {
         TerrainChunkData data = chunk.getTerrain((byte) 0);
         if(data == null || !data.load2DData()) return MapType.CHESS.renderer.renderToBitmap(cm, bm, dimension, chunkX, chunkZ, bX, bZ, eX, eZ, pX, pY, pW, pL);
 
-
         TerrainChunkData dataW = cm.getChunk(chunkX - 1, chunkZ).getTerrain((byte) 0);
         TerrainChunkData dataN = cm.getChunk(chunkX, chunkZ-1).getTerrain((byte) 0);
 
         boolean west = dataW != null && dataW.load2DData(),
                 north = dataN != null && dataN.load2DData();
 
-        int x, y, z, color, i, j, tX, tY;
-        for (z = bZ, tY = pY ; z < eZ; z++, tY += pL) {
+        int x, y, z, color, i, j, tX, tY, heightW, heightN;
+        for (z = bZ, tY = pY; z < eZ; z++, tY += pL) {
             for (x = bX, tX = pX; x < eX; x++, tX += pW) {
 
                 y = data.getHeightMapValue(x, z);
 
+                heightW = (x == 0) ? (west ? dataW.getHeightMapValue(dimension.chunkW - 1, z) : y)//chunk edge
+                        : data.getHeightMapValue(x - 1, z);
+
+                heightN = (z == 0) ? (north ? dataN.getHeightMapValue(x, dimension.chunkL - 1) : y)//chunk edge
+                        : data.getHeightMapValue(x, z - 1);
+
                 color = getColumnColour(chunk, data, x, y, z,
-                        (x == 0) ? (west ? dataW.getHeightMapValue(dimension.chunkW - 1, z) : y)//chunk edge
-                                 : data.getHeightMapValue(x - 1, z),//within chunk
-                        (z == 0) ? (north ? dataN.getHeightMapValue(x, dimension.chunkL - 1) : y)//chunk edge
-                                 : data.getHeightMapValue(x, z - 1)//within chunk
+                        heightW,//within chunk
+                        heightN//within chunk
                 );
 
-                for(i = 0; i < pL; i++){
-                    for(j = 0; j < pW; j++){
+                for (i = 0; i < pL; i++) {
+                    for (j = 0; j < pW; j++) {
                         bm.setPixel(tX + j, tY + i, color);
                     }
                 }
-
-
             }
         }
 

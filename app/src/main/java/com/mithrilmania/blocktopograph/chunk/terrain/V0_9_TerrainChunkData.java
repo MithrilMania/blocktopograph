@@ -127,13 +127,13 @@ public class V0_9_TerrainChunkData extends TerrainChunkData {
     }
 
     @Override
-    public byte getBlockData(int x, int y, int z) {
+    public short getBlockData(int x, int y, int z) {
         if (x >= chunkW || y >= chunkH || z >= chunkL || x < 0 || y < 0 || z < 0) {
             return 0;
         }
         int offset = getOffset(x, y, z);
         byte dualData = buf.get(POS_META_DATA + (offset >>> 1));
-        return (byte) ((offset & 1) == 1 ? ((dualData >>> 4) & 0xf) : (dualData & 0xf));
+        return (short) ((offset & 1) == 1 ? ((dualData >>> 4) & 0xf) : (dualData & 0xf));
     }
 
     @Override
