@@ -74,7 +74,6 @@ public class SatelliteRenderer implements MapRenderer {
                 }
             }
         }
-
         return bm;
     }
 
@@ -91,9 +90,7 @@ public class SatelliteRenderer implements MapRenderer {
         float biomeB = (float) (floorData.getGrassB(x, z) & 0xff) / 255f;
 
         float blendR, blendG, blendB;
-
         float blockA, blockR, blockG, blockB;
-
 
         Block block;
         int id, meta;
@@ -105,10 +102,11 @@ public class SatelliteRenderer implements MapRenderer {
 
         TerrainChunkData data;
 
-        subChunkLoop: for(; subChunk >= 0; subChunk--) {
+        subChunkLoop:
+        for (; subChunk >= 0; subChunk--) {
 
             data = chunk.getTerrain((byte) subChunk);
-            if (data == null || !data.loadTerrain()){
+            if (data == null || !data.loadTerrain()) {
                 //start at the top of the next chunk! (current offset might differ)
                 offset = cVersion.subChunkHeight - 1;
                 continue;
@@ -125,7 +123,6 @@ public class SatelliteRenderer implements MapRenderer {
 
                 //try the default meta value: 0
                 if (block == null) block = Block.getBlock(id, 0);
-
 
                 //TODO log null blocks to debug missing blocks
                 if (block == null) {
@@ -159,7 +156,7 @@ public class SatelliteRenderer implements MapRenderer {
                 a *= 1f - blockA;
 
                 // break when an opaque block is encountered
-                if (block.color.alpha == 0xff){
+                if (block.color.alpha == 0xff) {
                     break subChunkLoop;
                 }
             }
@@ -167,13 +164,11 @@ public class SatelliteRenderer implements MapRenderer {
             //start at the top of the next chunk! (current offset might differ)
             offset = cVersion.subChunkHeight - 1;
         }
-
         //set y to the "real" y; consider all sub-chunks as a stack of chunks.
         y = realY;
 
         //height shading (based on slopes in terrain; height diff)
         float heightShading = getHeightShading(y, heightW, heightN);
-
         //go back to "surface"
         y++;
 
@@ -183,7 +178,6 @@ public class SatelliteRenderer implements MapRenderer {
                 ? (surfaceChunk.getBlockLightValue(x, y % cVersion.subChunkHeight, z) & 0xff)
                 : 0;
         float lightShading = (float) lightValue / 15f + 1;
-
         //mix shading
         float shading = heightShading * lightShading;
 
@@ -194,7 +188,6 @@ public class SatelliteRenderer implements MapRenderer {
         r = Math.min(Math.max(0f, r * shading), 1f);
         g = Math.min(Math.max(0f, g * shading), 1f);
         b = Math.min(Math.max(0f, b * shading), 1f);
-
 
         // now we have our final RGB values as floats, convert to a packed ARGB pixel.
         return 0xff000000 |

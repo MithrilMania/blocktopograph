@@ -395,21 +395,30 @@ public class V1_2_TerrainChunkData extends TerrainChunkData {
     @Override
     public byte getGrassR(int x, int z) {
         Biome biome = Biome.getBiome(getBiome(x, z) & 0xff);
-        int res = getNoise(30 + (biome.color.red / 5), x, z);
+        int red = 0;
+        if(biome != null)
+            red = biome.color.red;
+        int res = getNoise(30 + (red / 5), x, z);
         return (byte) (res > 0xff ? 0xff : (res < 0 ? 0 : res));
     }
 
     @Override
     public byte getGrassG(int x, int z) {
         Biome biome = Biome.getBiome(getBiome(x, z) & 0xff);
-        int res = getNoise(120 + (biome.color.green / 5), x, z);
+        int green = 0;
+        if(biome != null)
+            green = biome.color.green;
+        int res = getNoise(120 + (green / 5), x, z);
         return (byte) (res > 0xff ? 0xff : (res < 0 ? 0 : res));
     }
 
     @Override
     public byte getGrassB(int x, int z) {
         Biome biome = Biome.getBiome(getBiome(x, z) & 0xff);
-        int res = getNoise(30 + (biome.color.blue / 5), x, z);
+        int blue = 0;
+        if(biome != null)
+            blue = biome.color.blue;
+        int res = getNoise(30 + (blue / 5), x, z);
         return (byte) (res > 0xff ? 0xff : (res < 0 ? 0 : res));
     }
 
