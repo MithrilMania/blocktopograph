@@ -76,8 +76,6 @@ dependencies {
     compile 'com.github.clans:fab:1.6.4'
     compile 'com.android.support:design:25.0.1'
     compile 'com.github.bmelnychuk:atv:1.2.8'
-    //core is the new recommended alias for analytics
-    compile 'com.google.firebase:firebase-core:10.0.1'
 }
 
 

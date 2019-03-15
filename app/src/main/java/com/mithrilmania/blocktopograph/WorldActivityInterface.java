@@ -27,10 +27,6 @@ public interface WorldActivityInterface {
 
     void addMarker(AbstractMarker marker);
 
-    void logFirebaseEvent(WorldActivity.CustomFirebaseEvent firebaseEvent);
-
-    void logFirebaseEvent(WorldActivity.CustomFirebaseEvent firebaseEvent, Bundle eventContent);
-
     void showActionBar();
 
     void hideActionBar();

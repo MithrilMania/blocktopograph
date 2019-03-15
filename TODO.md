@@ -14,6 +14,3 @@
 - optimizing the top down rendering with lazy chunk loading (from the right direction, stopping when opaque)
 
 #important
-
-- firebase cleanup (remove config, new key)
-- google big query!

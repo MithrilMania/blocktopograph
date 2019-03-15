@@ -27,7 +27,6 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TextView;
 
-import com.google.firebase.analytics.FirebaseAnalytics;
 import com.mithrilmania.blocktopograph.map.Dimension;
 import com.mithrilmania.blocktopograph.map.marker.AbstractMarker;
 import com.mithrilmania.blocktopograph.nbt.convert.NBTConstants;
@@ -51,55 +50,6 @@ public class WorldActivity extends AppCompatActivity
     private World world;
 
     private MapFragment mapFragment;
-
-    private FirebaseAnalytics mFirebaseAnalytics;
-
-    synchronized public FirebaseAnalytics getFirebaseAnalytics() {
-        if (mFirebaseAnalytics == null) {
-            mFirebaseAnalytics = FirebaseAnalytics.getInstance(this);
-
-            //don't measure the test devices in analytics
-            mFirebaseAnalytics.setAnalyticsCollectionEnabled(!BuildConfig.DEBUG);
-        }
-        return mFirebaseAnalytics;
-    }
-
-    // Firebase events, these are meant to be as anonymous as possible,
-    //  pure counters for usage analytics.
-    // Do not remove! Removing analytics in a fork skews the results to the original userbase!
-    // Forks should stay in touch, all new features are welcome.
-    public enum CustomFirebaseEvent {
-
-        //max 32 chars:     "0123456789abcdef0123456789abcdef"
-        MAPFRAGMENT_OPEN(   "map_fragment_open"),
-        MAPFRAGMENT_RESUME( "map_fragment_resume"),
-        MAPFRAGMENT_RESET(  "map_fragment_reset"),
-        NBT_EDITOR_OPEN(    "nbt_editor_open"),
-        NBT_EDITOR_SAVE(    "nbt_editor_save"),
-        WORLD_OPEN(         "world_open"),
-        WORLD_RESUME(       "world_resume"),
-        GPS_PLAYER(         "gps_player"),
-        GPS_MULTIPLAYER(    "gps_multiplayer"),
-        GPS_SPAWN(          "gps_spawn"),
-        GPS_MARKER(         "gps_marker"),
-        GPS_COORD(          "gps_coord");
-
-        public final String eventID;
-
-        CustomFirebaseEvent(String eventID){
-            this.eventID = eventID;
-        }
-    }
-
-    @Override
-    public void logFirebaseEvent(CustomFirebaseEvent firebaseEvent){
-        getFirebaseAnalytics().logEvent(firebaseEvent.eventID, new Bundle());
-    }
-
-    @Override
-    public void logFirebaseEvent(CustomFirebaseEvent firebaseEvent, Bundle eventContent){
-        getFirebaseAnalytics().logEvent(firebaseEvent.eventID, eventContent);
-    }
 
     @Override
     public void showActionBar() {
@@ -184,23 +134,6 @@ public class WorldActivity extends AppCompatActivity
         TextView subtitle = (TextView) headerView.findViewById(R.id.world_drawer_subtitle);
         assert subtitle != null;
 
-        /*
-            World-seed & world-name analytics.
-
-            Send anonymous world data to the Firebase (Google analytics for Android) server.
-            This data will be pushed to Google-BigQuery.
-            Google-BigQuery will crunch the world-data,
-              storing hundreds of thousands world-seeds + names.
-            The goal is to automatically create a "Top 1000" popular seeds for every week.
-            This "Top 1000" will be published as soon as it gets out of BigQuery,
-             keep it for the sake of this greater goal. It barely uses internet bandwidth,
-             and this makes any forced intrusive revenue alternatives unnecessary.
-
-            TODO BigQuery is not configured yet,
-             @mithrilmania (author of Blocktopograph) is working on it!
-
-            *link to results will be included here for reference when @mithrilmania is done*
-         */
         String worldSeed = String.valueOf(this.world.getWorldSeed());
         subtitle.setText(worldSeed);
 
@@ -208,16 +141,8 @@ public class WorldActivity extends AppCompatActivity
         bundle.putString("seed", worldSeed);
         bundle.putString("name", this.world.getWorldDisplayName());
 
-
-
-        // anonymous global counter of opened worlds
-        logFirebaseEvent(CustomFirebaseEvent.WORLD_OPEN, bundle);
-
-
-
         // Open the world-map as default content
         openWorldMap();
-
 
         try {
             //try to load world-data (Opens chunk-database for later usage)
@@ -241,9 +166,6 @@ public class WorldActivity extends AppCompatActivity
     public void onResume(){
         Log.d("World activity resuming...");
         super.onResume();
-
-        // anonymous global counter of resumed world-activities
-        logFirebaseEvent(CustomFirebaseEvent.WORLD_RESUME);
 
         try {
             this.world.resume();

@@ -997,7 +997,6 @@ public class EditorFragment extends Fragment {
 
                                         Snackbar.make(view, "Saved NBT data!", Snackbar.LENGTH_LONG)
                                                 .setAction("Action", null).show();
-                                        ((WorldActivityInterface) activity).logFirebaseEvent(WorldActivity.CustomFirebaseEvent.NBT_EDITOR_SAVE);
                                     } else {
                                         Snackbar.make(view, "Error: failed to save the NBT data.", Snackbar.LENGTH_LONG)
                                                 .setAction("Action", null).show();
@@ -1021,8 +1020,6 @@ public class EditorFragment extends Fragment {
 
         Bundle bundle = new Bundle();
         bundle.putString("title", nbt.getRootTitle());
-
-        ((WorldActivityInterface) getActivity()).logFirebaseEvent(WorldActivity.CustomFirebaseEvent.NBT_EDITOR_OPEN, bundle);
     }
 
     @Override

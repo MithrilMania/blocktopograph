@@ -746,6 +746,7 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_2200_2_stripped_oak_log("minecraft:stripped_oak_log", "", 2200, 2, "blocks/observer.png", 0xff3d6e86, false),
     B_2201_3_stripped_oak_log("minecraft:stripped_oak_log", "", 2201, 3, "blocks/observer.png", 0xff3d6e86, false),
     B_2202_0_blue_ice("minecraft:blue_ice", "", 2202, 0, "blocks/observer.png", 0xff3d6e86, false),
+    /*
     B_2203_0_element_1("minecraft:element_1", "", 2203, 0, "blocks/observer.png", 0xff3d6e86, false),
     B_2204_1_element_1("minecraft:element_1", "", 2204, 1, "blocks/observer.png", 0xff3d6e86, false),
     B_2205_2_element_1("minecraft:element_1", "", 2205, 2, "blocks/observer.png", 0xff3d6e86, false),
@@ -2634,6 +2635,7 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_4088_13_element_118("minecraft:element_118", "", 4088, 13, "blocks/observer.png", 0xff3d6e86, false),
     B_4089_14_element_118("minecraft:element_118", "", 4089, 14, "blocks/observer.png", 0xff3d6e86, false),
     B_4090_15_element_118("minecraft:element_118", "", 4090, 15, "blocks/observer.png", 0xff3d6e86, false),
+    */
     B_4091_0_seagrass("minecraft:seagrass", "", 4091, 0, "blocks/observer.png", 0xff3d6e86, false),
     B_4092_1_seagrass("minecraft:seagrass", "", 4092, 1, "blocks/observer.png", 0xff3d6e86, false),
     B_4093_2_seagrass("minecraft:seagrass", "", 4093, 2, "blocks/observer.png", 0xff3d6e86, false),

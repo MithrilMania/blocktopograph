@@ -107,8 +107,6 @@ public class MapFragment extends Fragment {
         super.onStart();
 
         getActivity().setTitle(this.worldProvider.getWorld().getWorldDisplayName());
-
-        worldProvider.logFirebaseEvent(WorldActivity.CustomFirebaseEvent.MAPFRAGMENT_OPEN);
     }
 
     @Override
@@ -117,8 +115,6 @@ public class MapFragment extends Fragment {
 
         //resume drawing the map
         this.tileView.resume();
-
-        worldProvider.logFirebaseEvent(WorldActivity.CustomFirebaseEvent.MAPFRAGMENT_RESUME);
     }
 
     @Override
@@ -314,8 +310,6 @@ public class MapFragment extends Fragment {
                         worldProvider.changeMapType(playerPos.dimension.defaultMapType, playerPos.dimension);
                     }
 
-                    worldProvider.logFirebaseEvent(WorldActivity.CustomFirebaseEvent.GPS_PLAYER);
-
                     frameTo((double) playerPos.x, (double) playerPos.z);
 
                 } catch (Exception e){
@@ -346,8 +340,6 @@ public class MapFragment extends Fragment {
                     if(spawnPos.dimension != worldProvider.getDimension()){
                         worldProvider.changeMapType(spawnPos.dimension.defaultMapType, spawnPos.dimension);
                     }
-
-                    worldProvider.logFirebaseEvent(WorldActivity.CustomFirebaseEvent.GPS_SPAWN);
 
                     frameTo((double) spawnPos.x, (double) spawnPos.z);
 
@@ -437,8 +429,6 @@ public class MapFragment extends Fragment {
                                         }
 
                                         frameTo((double) m.x, (double) m.z);
-
-                                        worldProvider.logFirebaseEvent(WorldActivity.CustomFirebaseEvent.GPS_MARKER);
                                     }
                                 });
                         markerDialogBuilder.show();
@@ -537,8 +527,6 @@ public class MapFragment extends Fragment {
                                                                 Snackbar.LENGTH_LONG)
                                                                 .setAction("Action", null).show();
 
-                                                        worldProvider.logFirebaseEvent(WorldActivity.CustomFirebaseEvent.GPS_MULTIPLAYER);
-
                                                         if(playerPos.dimension != worldProvider.getDimension()){
                                                             worldProvider.changeMapType(playerPos.dimension.defaultMapType, playerPos.dimension);
                                                         }
@@ -602,8 +590,6 @@ public class MapFragment extends Fragment {
                                         Toast.makeText(activity, R.string.invalid_z_coordinate,Toast.LENGTH_LONG).show();
                                         return;
                                     }
-
-                                    worldProvider.logFirebaseEvent(WorldActivity.CustomFirebaseEvent.GPS_COORD);
 
                                     frameTo((double) inX, (double) inZ);
                                 }
@@ -1525,8 +1511,6 @@ public class MapFragment extends Fragment {
 
     public void resetTileView(){
         if(this.tileView != null){
-            worldProvider.logFirebaseEvent(WorldActivity.CustomFirebaseEvent.MAPFRAGMENT_RESET);
-
             updateMarkerFilter();
 
             tileView.getDetailLevelManager().setLevelType(worldProvider.getMapType());
