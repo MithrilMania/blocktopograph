@@ -84,8 +84,6 @@ public enum Version {
             case ERROR:
             case NULL:
                 return null;
-            case Beta_Palletted:
-                throw new VersionException("Handling terrain chunk data is NOT supported for this version!", this);
             default:
                 //use the latest version, like nothing will ever happen...
                 return new NBTChunkData(chunk, ChunkTag.ENTITY);

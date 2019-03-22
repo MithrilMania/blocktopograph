@@ -63,12 +63,24 @@ public class MarkerAsyncTask extends AsyncTask<Void, AbstractMarker, Void> {
             entityData.load();
 
             if(entityData.tags == null) return;
+            IntTag idTag;
+            int id;
+            Entity e;
+            StringTag identifierTag;
+            String identifier;
 
             for (Tag tag : entityData.tags) {
                 if (tag instanceof CompoundTag) {
                     CompoundTag compoundTag = (CompoundTag) tag;
-                    int id = ((IntTag) compoundTag.getChildTagByKey("id")).getValue();
-                    Entity e = Entity.getEntity(id & 0xff);
+                    idTag = ((IntTag) compoundTag.getChildTagByKey("id"));
+                    if(idTag != null) {
+                        id = idTag.getValue();
+                        e = Entity.getEntity(id & 0xff);
+                    } else {
+                        identifierTag = ((StringTag) compoundTag.getChildTagByKey("identifier"));
+                        identifier = identifierTag.getValue().replace("minecraft:", "");
+                        e = Entity.getEntity(identifier);
+                    }
                     if (e != null && e.bitmap != null) {
                         List<Tag> pos = ((ListTag) compoundTag.getChildTagByKey("Pos")).getValue();
                         float xf = ((FloatTag) pos.get(0)).getValue();
