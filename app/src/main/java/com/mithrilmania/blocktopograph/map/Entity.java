@@ -24,14 +24,14 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     PIG(12, "Pig", new String[]{ "Pig", "pig" }, "pig", 1),
     SHEEP(13, "Sheep", new String[]{ "Sheep", "sheep" }, "sheep", 2),
     WOLF(14, "Wolf", new String[]{ "Wolf", "wolf" }, "wolf", 18),
-    VILLAGER(15, "Villager", new String[]{ "Villager", "villager" }, "villager", 7),
+    VILLAGER(15, "Villager", new String[]{ "Villager", "villager", "villager_v2" }, "villager", 7),
     MUSHROOM_COW(16, "Mooshroom", new String[]{ "MushroomCow", "mushroomcow", "mooshroom" }, "mooshroom", 6),
     SQUID(17, "Squid", new String[]{ "Squid", "squid" }, "squid", 5),
     RABBIT(18, "Rabbit", new String[]{ "Rabbit", "rabbit" }, "rabbit", 89),
     BAT(19, "Bat", new String[]{ "Bat", "bat" }, "bat", 64),
     VILLAGER_GOLEM(20, "Iron Golem", new String[]{ "VillagerGolem", "IronGolem", "villagergolem", "irongolem", "iron-golem" }, "iron-golem", 48),
     SNOW_MAN(21, "Snow Golem", new String[]{ "SnowMan", "SnowGolem", "snowman", "snowgolem", "snow-golem" }, "snow-golem", 31),
-    OZELOT(22, "Ocelot", new String[]{ "Ozelot", "Ocelot", "ozelot", "ocelot" }, "ozelot", 37),
+    OZELOT(22, "Ocelot", new String[]{ "Ozelot", "Ocelot", "ozelot", "ocelot", "cat" }, "ozelot", 37),
     HORSE(23, "Donkey", new String[]{ "EntityHorse", "Horse", "entityhorse", "horse" }, "horse", 73),
     HORSE_DONKEY(24, "Donkey", new String[]{ "EntityHorse", "Donkey", "donkey" }, "donkey", 74),
     HORSE_MULE(25, "Mule", new String[]{ "EntityHorse", "Mule", "mule" }, "mule", 75),
@@ -195,5 +195,4 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
             }
         }
     }
-
 }
