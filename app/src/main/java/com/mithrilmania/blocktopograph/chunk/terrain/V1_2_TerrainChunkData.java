@@ -1,6 +1,7 @@
 package com.mithrilmania.blocktopograph.chunk.terrain;
 
 import com.mithrilmania.blocktopograph.WorldData;
+import com.mithrilmania.blocktopograph.Log;
 import com.mithrilmania.blocktopograph.chunk.Chunk;
 import com.mithrilmania.blocktopograph.chunk.ChunkTag;
 import com.mithrilmania.blocktopograph.map.Biome;
@@ -297,8 +298,12 @@ public class V1_2_TerrainChunkData extends TerrainChunkData {
         String name = (String)((CompoundTag)palletEntry).getChildTagByKey("name").getValue();
 
         Block blk = Block.getByDataName(name);
+
         if(blk != null)
             realID = blk.id;
+        else
+            Log.w("Unknown block name: " + name);
+
         return (byte)realID;
     }
 
