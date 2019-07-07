@@ -39,7 +39,7 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     HORSE_ZOMBIE(27, "Zombie Horse", new String[]{ "EntityHorse", "ZombieHorse", "zombiehorse", "zombie-horse" }, "zombie-horse", 77),
     //28
     //29
-    ARMOR_STAND(30, "Armor Stand", new String[]{ "ArmorStand", "armorstand" }, "TODO", 106),//30 ; ArmorStand is not yet in the game
+    ARMOR_STAND(30, "Armor Stand", new String[]{ "ArmorStand", "armorstand" }, "TODO", 106),
     //31
     ZOMBIE(32, "Zombie", new String[]{ "Zombie", "zombie" }, "zombie", 9),
     CREEPER(33, "Creeper", new String[]{ "Creeper", "creeper" }, "creeper", 14),
@@ -49,11 +49,11 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     SLIME(37, "Slime", new String[]{ "Slime", "slime" }, "slime", 15),
     ENDERMAN(38, "Enderman", new String[]{ "Enderman", "EnderMan", "enderman" }, "enderman", 21),
     SILVERFISH(39, "Silverfish", new String[]{ "Silverfish", "silverfish" }, "silverfish", 22),
-    CAVE_SPIDER(40, "Cave Spider", new String[]{ "CaveSpider", "cavespider", "cave-spider" }, "cave-spider", 13),
+    CAVE_SPIDER(40, "Cave Spider", new String[]{ "CaveSpider", "cavespider", "cave-spider", "cave_spider" }, "cave-spider", 13),
     GHAST(41, "Ghast", new String[]{ "Ghast", "ghast" }, "ghast", 16),
     LAVA_SLIME(42, "Magma Cube", new String[]{ "LavaSlime", "lavaslime", "magma-cube" }, "magma-cube", 24),
     BLAZE(43, "Blaze", new String[]{ "Blaze", "blaze" }, "blaze", 32),
-    ZOMBIE_VILLAGER(44, "Zombie Villager", new String[]{ "ZombieVillager", "zombievillager" }, "zombie-villager", 62),
+    ZOMBIE_VILLAGER(44, "Zombie Villager", new String[]{ "ZombieVillager", "zombievillager", "zombie_villager_v2" }, "zombie-villager", 62),
     WITCH(45, "Witch", new String[]{ "Witch", "witch" }, "witch", 54),
     SKELETON_STRAY(46, "Stray", new String[]{ "Skeleton", "StraySkeleton", "strayskeleton", "stray"}, "stray", 98),
     ZOMBIE_HUSK(47, "Husk", new String[]{ "Zombie", "HuskZombie", "husk", "huskzombie" }, "husk", 99),
@@ -116,7 +116,8 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     MINECART_COMMAND_BLOCK(901, "Minecart with Command Block", new String[]{ "MinecartCommandBlock", "minecartcommandblock", "minecart-with-command-block" }, "minecart-with-command-block", 78),//100 ; MinecartCommandBlock is not yet in the game
     MINECART_FURNACE(902, "Powered Minecart", new String[]{ "MinecartFurnace", "minecartfurnace", "minecart-furnace" }, "minecart-furnace", 36),//101 ; MinecartFurnace is not yet in the game
     FIREWORKS_ROCKET_ENTITY(903, "Firework Rocket", new String[]{ "FireworksRocketEntity", "fireworksrocketentity", "fireworks-rocket" }, "fireworks-rocket", 144),//95 ; FireworksRocketEntity is not in the game yet
-
+    PILLAGER(997, "Pillager", new String[] {"pillager"}, "pillager", 102),
+    DROWNED(998, "Drowned", new String[]{ "drowned" }, "drowned", 109),
     UNKNOWN(999, "Unknown", new String[]{ "Unknown", "unknown" }, "unknown", 144);
 
     public final int id, sheetPos;

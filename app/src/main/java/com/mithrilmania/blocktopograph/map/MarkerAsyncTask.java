@@ -41,12 +41,17 @@ public class MarkerAsyncTask extends AsyncTask<Void, AbstractMarker, Void> {
     protected Void doInBackground(Void... v) {
 
         int cX, cZ;
-        for(cZ = minChunkZ; cZ < maxChunkZ; cZ++){
-            for(cX = minChunkX; cX < maxChunkX; cX++){
-                loadEntityMarkers(cX, cZ);
-                loadTileEntityMarkers(cX, cZ);
-                loadCustomMarkers(cX, cZ);
+        try {
+            for (cZ = minChunkZ; cZ < maxChunkZ; cZ++) {
+                for (cX = minChunkX; cX < maxChunkX; cX++) {
+                    loadEntityMarkers(cX, cZ);
+                    loadTileEntityMarkers(cX, cZ);
+                    loadCustomMarkers(cX, cZ);
+                }
             }
+        }
+        catch(Exception ex) {
+            Log.w(ex.getMessage());
         }
 
         return null;
@@ -65,7 +70,7 @@ public class MarkerAsyncTask extends AsyncTask<Void, AbstractMarker, Void> {
             if(entityData.tags == null) return;
             IntTag idTag;
             int id;
-            Entity e;
+            Entity e = null;
             StringTag identifierTag;
             String identifier;
 
@@ -78,8 +83,15 @@ public class MarkerAsyncTask extends AsyncTask<Void, AbstractMarker, Void> {
                         e = Entity.getEntity(id & 0xff);
                     } else {
                         identifierTag = ((StringTag) compoundTag.getChildTagByKey("identifier"));
-                        identifier = identifierTag.getValue().replace("minecraft:", "");
-                        e = Entity.getEntity(identifier);
+                        if(identifierTag != null)
+                        {
+                            identifier = identifierTag.getValue().replace("minecraft:", "");
+                            e = Entity.getEntity(identifier);
+
+                            if(e == null || e.bitmap == null) {
+                                Log.w("Entity not found: " + identifier);
+                            }
+                        }
                     }
                     if (e != null && e.bitmap != null) {
                         List<Tag> pos = ((ListTag) compoundTag.getChildTagByKey("Pos")).getValue();

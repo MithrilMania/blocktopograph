@@ -91,8 +91,8 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_28_0_DETECTOR_RAIL("minecraft:detector_rail", null, 28, 0, "blocks/detector_rail.png", 0x9b786559, false),
     B_29_0_STICKY_PISTON("minecraft:sticky_piston", null, 29, 0, "blocks/sticky_piston.png", 0xff8d9263, false),
     B_30_0_WEB("minecraft:web", null, 30, 0, "blocks/web.png", 0x68dcdcdc, false),
+    B_31_0_TALLGRASS_FERN("minecraft:tallgrass", "tall grass", 31, 0, "blocks/tallgrass_fern.png", 0xff747474, true),
     B_31_1_TALLGRASS_FERN("minecraft:tallgrass", "fern", 31, 1, "blocks/tallgrass_fern.png", 0xff747474, true),
-    B_31_2_TALLGRASS_GRASS("minecraft:tallgrass", "grass", 31, 2, "blocks/tallgrass_grass.png", 0x4e787878, true),
     B_32_0_DEADBUSH("minecraft:deadbush", null, 32, 0, "blocks/deadbush.png", 0x517b4f19, false),
     B_33_0_PISTON("minecraft:piston", null, 33, 0, "blocks/piston.png", 0xff998159, false),
     B_34_0_PISTONARMCOLLISION("minecraft:pistonArmCollision", null, 34, 0, "blocks/pistonArmCollision.png", 0xff9c7f4e, false),
@@ -743,6 +743,7 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_2200_2_stripped_oak_log("minecraft:stripped_oak_log", "", 2200, 2, "blocks/observer.png", 0xff9a7d4d, false),
     B_2201_3_stripped_oak_log("minecraft:stripped_oak_log", "", 2201, 3, "blocks/observer.png", 0xff9a7d4d, false),
     B_2202_0_blue_ice("minecraft:blue_ice", "", 2202, 0, "blocks/observer.png", 0xff7dbeF6, false),
+
     /*
     B_2203_0_element_1("minecraft:element_1", "", 2203, 0, "blocks/observer.png", 0xff3d6e86, false),
     B_2204_1_element_1("minecraft:element_1", "", 2204, 1, "blocks/observer.png", 0xff3d6e86, false),
@@ -3020,6 +3021,26 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_4475_7_sea_pickle("minecraft:sea_pickle", "", 4475, 7, "blocks/observer.png", 0xff10C38e, false),
 
 
+    B_4476_0_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 0, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_1_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 1, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_2_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 2, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_3_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 3, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_4_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 4, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_5_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 5, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_6_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 6, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_7_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 7, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_8_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 8, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_9_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 9, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_10_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 10, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_11_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 11, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_12_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 12, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_13_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 13, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_14_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 14, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+    B_4476_15_POLISHED_DIORITE_STAIRS("minecraft:polished_diorite_stairs", null, 4476, 15, "blocks/stone_stairs.png", 0xff7a7a7a, false),
+
+    B_4477_0_STONE_SLAB3("minecraft:stone_slab3", "diorite", 4477, 0, "blocks/double_stone_slab_quartz.png", 0xff9f9f9f, false),
+    B_4478_0_BUBBLE_COLUMN("minecraft:bubble_column", "bubble column", 4478, 0, "blocks/water_still.png", 0xff9f9f9f, false),
+    B_4479_0_STANDING_BANNER("minecraft:standing_banner", "standing banner", 4479, 0, "blocks/double_plant_paeonia.png", 0xff9f9f9f, false),
 
 
   /*
