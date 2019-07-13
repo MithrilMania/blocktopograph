@@ -73,7 +73,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CopyOnWriteArraySet;
 
-
 public class MapFragment extends Fragment {
 
     private WorldActivityInterface worldProvider;
@@ -90,9 +89,6 @@ public class MapFragment extends Fragment {
 
     public AbstractMarker spawnMarker;
     public AbstractMarker localPlayerMarker;
-
-
-
 
     @Override
     public void onPause() {
@@ -121,7 +117,6 @@ public class MapFragment extends Fragment {
     public void onDestroyView() {
         super.onDestroyView();
     }
-
 
     public DimensionVector3<Float> getMultiPlayerPos(String dbKey) throws Exception {
         try {
@@ -250,7 +245,6 @@ public class MapFragment extends Fragment {
 
             return v;
         }
-
     }
 
     public enum MarkerTapOption {
@@ -351,7 +345,6 @@ public class MapFragment extends Fragment {
             }
         });
 
-
         final Activity activity = getActivity();
 
         if(activity == null){
@@ -366,7 +359,6 @@ public class MapFragment extends Fragment {
             return null;
         }
 
-
         //show the toolbar if the fab menu is opened
         FloatingActionMenu fabMenu = (FloatingActionMenu) rootView.findViewById(R.id.fab_menu);
         fabMenu.setOnMenuToggleListener(new FloatingActionMenu.OnMenuToggleListener() {
@@ -376,8 +368,6 @@ public class MapFragment extends Fragment {
                 else worldProvider.hideActionBar();
             }
         });
-
-
 
         FloatingActionButton fabGPSMarker = (FloatingActionButton) rootView.findViewById(R.id.fab_menu_gps_marker);
         assert fabGPSMarker != null;
@@ -441,7 +431,6 @@ public class MapFragment extends Fragment {
             }
         });
 
-
         /*
         GPS button: moves camera to player position
          */
@@ -491,8 +480,6 @@ public class MapFragment extends Fragment {
                                         return;
                                     }
 
-
-
                                     //NBT tag type spinner
                                     final Spinner spinner = new Spinner(activity);
                                     ArrayAdapter<String> spinnerArrayAdapter = new ArrayAdapter<>(activity,
@@ -500,7 +487,6 @@ public class MapFragment extends Fragment {
 
                                     spinnerArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
                                     spinner.setAdapter(spinnerArrayAdapter);
-
 
                                     //wrap layout in alert
                                     new AlertDialog.Builder(activity)
@@ -605,8 +591,6 @@ public class MapFragment extends Fragment {
             }
         });
 
-
-
         try {
             Entity.loadEntityBitmaps(activity.getAssets());
         } catch (IOException e) {
@@ -623,9 +607,6 @@ public class MapFragment extends Fragment {
         } catch (IOException e){
             e.printStackTrace();
         }
-
-
-
 
         /*
         Create tile view
@@ -664,19 +645,15 @@ public class MapFragment extends Fragment {
         //add world view to its container in the main layout
         worldContainer.addView(tileView);
 
-
         /*
         Create tile(=bitmap) provider
          */
         this.minecraftTileProvider = new MCTileProvider(worldProvider);
 
-
-
         /*
         Set the bitmap-provider of the tile view
          */
         this.tileView.setBitmapProvider(this.minecraftTileProvider);
-
 
         /*
         Change tile view settings
@@ -706,7 +683,6 @@ public class MapFragment extends Fragment {
         }
 
         this.tileView.setScale(0.5f);
-
 
         boolean framedToPlayer = false;
 
@@ -756,11 +732,6 @@ public class MapFragment extends Fragment {
             if(!framedToPlayer) frameTo(0.0, 0.0);
 
         }
-
-
-
-
-
 
         tileView.getMarkerLayout().setMarkerTapListener(new MarkerLayout.MarkerTapListener() {
             @Override
@@ -872,8 +843,6 @@ public class MapFragment extends Fragment {
             }
         });
 
-
-
         //do not loop the scale
         tileView.setShouldLoopScale(false);
 
@@ -884,8 +853,6 @@ public class MapFragment extends Fragment {
         this.tileView.setShouldRenderWhilePanning(true);
 
         this.tileView.setSaveEnabled(true);
-
-
 
         return rootView;
     }
@@ -918,7 +885,6 @@ public class MapFragment extends Fragment {
     private final static int MARKER_INTERVAL_CHECK = 50;
     private int proceduralMarkersInterval = 0;
     private volatile AsyncTask shrinkProceduralMarkersTask;
-
 
     /**
      * Calculates viewport of tileview, expressed in blocks.
@@ -956,8 +922,8 @@ public class MapFragment extends Fragment {
             protected Void doInBackground(Object... params) {
                 long minX = (long) params[0],
                         maxX = (long) params[1],
-                        minY = (long) params[2],
-                        maxY = (long) params[3];
+                        minZ = (long) params[2],
+                        maxZ = (long) params[3];
                 Dimension reqDim = (Dimension) params[4];
 
                 for (AbstractMarker p : MapFragment.this.proceduralMarkers){
@@ -965,7 +931,7 @@ public class MapFragment extends Fragment {
                     // do not remove static markers
                     if(MapFragment.this.staticMarkers.contains(p)) continue;
 
-                    if(p.x < minX || p.x > maxX || p.y < minY || p.y > maxY || p.dimension != reqDim){
+                    if(p.x < minX || p.x > maxX || p.z < minZ || p.z > maxZ || p.dimension != reqDim){
                         this.publishProgress(p);
                     }
                 }
@@ -1022,9 +988,7 @@ public class MapFragment extends Fragment {
             proceduralMarkersInterval = 0;
         }
 
-
         proceduralMarkers.add(marker);
-
 
         Activity act = getActivity();
         if (act == null) return;
@@ -1036,7 +1000,6 @@ public class MapFragment extends Fragment {
             tileView.getMarkerLayout().removeMarker(markerView);
         }
 
-
         tileView.addMarker(markerView,
                 marker.dimension.dimensionScale * (double) marker.x / (double) MCTileProvider.HALF_WORLDSIZE,
                 marker.dimension.dimensionScale * (double) marker.z / (double) MCTileProvider.HALF_WORLDSIZE,
@@ -1047,7 +1010,6 @@ public class MapFragment extends Fragment {
         int visibility = tileView.getMarkerLayout().getVisibility();
         tileView.getMarkerLayout().setVisibility( visibility == View.VISIBLE ? View.GONE : View.VISIBLE);
     }
-
 
     public enum LongClickOption {
 
@@ -1076,7 +1038,6 @@ public class MapFragment extends Fragment {
         }
         return options;
     }
-
 
     public void onLongClick(final double worldX, final double worldZ){
 
@@ -1346,7 +1307,6 @@ public class MapFragment extends Fragment {
         return true;
     }
 
-
     @Override
     public void onDestroy() {
         super.onDestroy();
@@ -1415,7 +1375,6 @@ public class MapFragment extends Fragment {
         };
 
     }
-
 
     //static, remember choice while app is open.
     static Map<NamedBitmapProvider, BitmapChoiceListAdapter.NamedBitmapChoice> markerFilter = new HashMap<>();
@@ -1528,8 +1487,6 @@ public class MapFragment extends Fragment {
         //all tiles will now reload as soon as the tileView is drawn (user scrolls -> redraw)
     }
 
-
-
     /**
      * This is a convenience method to scrollToAndCenter after layout (which won't happen if called directly in onCreate
      * see https://github.com/moagrius/TileView/wiki/FAQ
@@ -1545,6 +1502,4 @@ public class MapFragment extends Fragment {
             }
         });
     }
-
-
 }

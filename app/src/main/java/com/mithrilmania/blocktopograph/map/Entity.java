@@ -116,8 +116,8 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     MINECART_COMMAND_BLOCK(901, "Minecart with Command Block", new String[]{ "MinecartCommandBlock", "minecartcommandblock", "minecart-with-command-block" }, "minecart-with-command-block", 78),//100 ; MinecartCommandBlock is not yet in the game
     MINECART_FURNACE(902, "Powered Minecart", new String[]{ "MinecartFurnace", "minecartfurnace", "minecart-furnace" }, "minecart-furnace", 36),//101 ; MinecartFurnace is not yet in the game
     FIREWORKS_ROCKET_ENTITY(903, "Firework Rocket", new String[]{ "FireworksRocketEntity", "fireworksrocketentity", "fireworks-rocket" }, "fireworks-rocket", 144),//95 ; FireworksRocketEntity is not in the game yet
-    PILLAGER(997, "Pillager", new String[] {"pillager"}, "pillager", 102),
-    DROWNED(998, "Drowned", new String[]{ "drowned" }, "drowned", 109),
+    PILLAGER(102, "Pillager", new String[] {"pillager"}, "pillager", 102),
+    DROWNED(103, "Drowned", new String[]{ "drowned" }, "drowned", 109),
     UNKNOWN(999, "Unknown", new String[]{ "Unknown", "unknown" }, "unknown", 144);
 
     public final int id, sheetPos;
