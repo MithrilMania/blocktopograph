@@ -911,7 +911,7 @@ public class MapFragment extends Fragment {
         long blockW = Math.round( (tileView.getWidth() + marginX + marginX) / pixelsPerBlockW );
         long blockH = Math.round( (tileView.getHeight() + marginZ + marginZ) / pixelsPerBlockL );
 
-        return new Object[]{ blockX, blockX + blockW, blockZ, blockH, dimension };
+        return new Object[]{ blockX, blockX + blockW, blockZ, blockZ + blockH, dimension };
     }
 
     public AsyncTask retainViewPortMarkers(final Runnable callback){

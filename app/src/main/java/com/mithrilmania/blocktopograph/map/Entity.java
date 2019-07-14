@@ -29,7 +29,7 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     SQUID(17, "Squid", new String[]{ "Squid", "squid" }, "squid", 5),
     RABBIT(18, "Rabbit", new String[]{ "Rabbit", "rabbit" }, "rabbit", 89),
     BAT(19, "Bat", new String[]{ "Bat", "bat" }, "bat", 64),
-    VILLAGER_GOLEM(20, "Iron Golem", new String[]{ "VillagerGolem", "IronGolem", "villagergolem", "irongolem", "iron-golem" }, "iron-golem", 48),
+    VILLAGER_GOLEM(20, "Iron Golem", new String[]{ "VillagerGolem", "IronGolem", "villagergolem", "irongolem", "iron-golem", "iron_golem" }, "iron-golem", 48),
     SNOW_MAN(21, "Snow Golem", new String[]{ "SnowMan", "SnowGolem", "snowman", "snowgolem", "snow-golem" }, "snow-golem", 31),
     OZELOT(22, "Ocelot", new String[]{ "Ozelot", "Ocelot", "ozelot", "ocelot", "cat" }, "ozelot", 37),
     HORSE(23, "Donkey", new String[]{ "EntityHorse", "Horse", "entityhorse", "horse" }, "horse", 73),
@@ -79,7 +79,7 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     FALLING_SAND(66, "Falling Block", new String[]{ "FallingBlock", "falling-sand", "fallingblock" }, "falling-sand", 50),
     ITEM_FRAME(67, "Item Frame", new String[]{ "ItemFrame", "itemframe", "empty-item-frame" }, "empty-item-frame", 66),//67 ; ItemFrame is not yet in the game
     THROWN_EXP_BOTTLE(68, "Bottle o' Enchanting", new String[]{ "ThrownExpBottle", "ExperiencePotion", "thrownexpbottle" }, "ThrownExpBottle", 56),
-    XP_ORB(69, "Experience Orb", new String[]{ "XPOrb", "ExperienceOrb", "experience-orb", "experienceorb" }, "experience-orb", 59),
+    XP_ORB(69, "Experience Orb", new String[]{ "XPOrb", "ExperienceOrb", "experience-orb", "experienceorb", "xp_orb" }, "experience-orb", 59),
     EYE_OF_ENDER_SIGNAL(70, "Eye of Ender", new String[]{ "EyeOfEnderSignal", "eyeofendersignal", "eye-of-ender" }, "eye-of-ender", 47),
     ENDER_CRYSTAL(71, "Ender Crystal", new String[]{ "EnderCrystal", "endercrystal", "ender-crystal" }, "ender-crystal", 52),
     //72
@@ -118,6 +118,7 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     FIREWORKS_ROCKET_ENTITY(903, "Firework Rocket", new String[]{ "FireworksRocketEntity", "fireworksrocketentity", "fireworks-rocket" }, "fireworks-rocket", 144),//95 ; FireworksRocketEntity is not in the game yet
     PILLAGER(102, "Pillager", new String[] {"pillager"}, "pillager", 102),
     DROWNED(103, "Drowned", new String[]{ "drowned" }, "drowned", 109),
+    PUFFERFISH(104, "Pufferfish", new String[]{ "pufferfish" }, "pufferfish", 110),
     UNKNOWN(999, "Unknown", new String[]{ "Unknown", "unknown" }, "unknown", 144);
 
     public final int id, sheetPos;
