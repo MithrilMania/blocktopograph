@@ -51,7 +51,7 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     SILVERFISH(39, "Silverfish", new String[]{ "Silverfish", "silverfish" }, "silverfish", 22),
     CAVE_SPIDER(40, "Cave Spider", new String[]{ "CaveSpider", "cavespider", "cave-spider", "cave_spider" }, "cave-spider", 118),
     GHAST(41, "Ghast", new String[]{ "Ghast", "ghast" }, "ghast", 16),
-    LAVA_SLIME(42, "Magma Cube", new String[]{ "LavaSlime", "lavaslime", "magma-cube" }, "magma-cube", 24),
+    LAVA_SLIME(42, "Magma Cube", new String[]{ "LavaSlime", "lavaslime", "magma-cube, magma_cube" }, "magma-cube", 24),
     BLAZE(43, "Blaze", new String[]{ "Blaze", "blaze" }, "blaze", 32),
     ZOMBIE_VILLAGER(44, "Zombie Villager", new String[]{ "ZombieVillager", "zombievillager", "zombie_villager_v2", "zombie_villager" }, "zombie-villager", 62),
     WITCH(45, "Witch", new String[]{ "Witch", "witch" }, "witch", 54),
