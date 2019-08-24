@@ -63,7 +63,7 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     NPC(51, "NPC", new String[]{ "Npc", "npc" }, "npc", 100),
     WITHER_BOSS(52, "Wither Boss", new String[]{ "WitherBoss", "witherboss", "blue-wither-skull" }, "blue-wither-skull", 72),
     ENDER_DRAGON(53, "Ender Dragon", new String[]{ "EnderDragon", "ender-dragon", "enderdragon" }, "ender-dragon", 29),
-    SHULKER(54, "Shulker", new String[]{ "Shulker", "shukler" }, "shulker", 30),
+    SHULKER(54, "Shulker", new String[]{ "Shulker", "shukler", "shulker" }, "shulker", 30),
     ENDERMITE(55, "Endermite", new String[]{ "Endermite", "endermite" }, "endermite", 86),
     LEARN_TO_CODE_MASCOT(56, "Learn To Code Mascot", new String[]{ "LearnToCodeMascot", "learntocodemascot", "learn-to-code-mascot" }, "learn-to-code-mascot", 108),
     GIANT(57, "Giant Zombie", new String[]{ "Giant", "giant" }, "giant", 9),//53 ; Giant is not yet in the game
