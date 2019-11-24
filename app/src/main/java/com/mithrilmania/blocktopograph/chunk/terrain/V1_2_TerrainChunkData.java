@@ -316,7 +316,21 @@ public class V1_2_TerrainChunkData extends TerrainChunkData {
 
         Tag palletEntry = pallet.get(runtimeID);
 
-        Short shrt = (Short) ((CompoundTag)palletEntry).getChildTagByKey("val").getValue();
+        Short shrt = 0;
+        try {
+            CompoundTag tg = ((CompoundTag)palletEntry);
+            if(tg.getChildTagByKey("val") != null)
+                shrt = (Short) tg.getChildTagByKey("val").getValue();
+            else {
+                String nm = (String)tg.getChildTagByKey("name").getValue();
+
+                shrt = 0;//(Short) tg.getChildTagByKey("name").getValue();
+            }
+        }
+        catch(Exception e)
+        {
+            android.util.Log.e("getBlockData", "getBlockData: ",e );
+        }
 
         return shrt.shortValue();
     }

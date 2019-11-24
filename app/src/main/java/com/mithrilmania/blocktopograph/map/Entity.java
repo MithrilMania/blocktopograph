@@ -35,7 +35,7 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     HORSE(23, "Horse", new String[]{ "EntityHorse", "Horse", "entityhorse", "horse" }, "horse", 73),
     HORSE_DONKEY(24, "Donkey", new String[]{ "EntityHorse", "Donkey", "donkey" }, "donkey", 74),
     HORSE_MULE(25, "Mule", new String[]{ "EntityHorse", "Mule", "mule" }, "mule", 75),
-    HORSE_SKELETON(26, "Skeleten Horse", new String[]{ "EntityHorse", "SkeletonHorse", "skeletonhorse", "skeleton-horse" }, "skeleton-horse", 76),
+    HORSE_SKELETON(26, "Skeleten Horse", new String[]{ "skeleton_horse", "EntityHorse", "SkeletonHorse", "skeletonhorse", "skeleton-horse" }, "skeleton-horse", 76),
     HORSE_ZOMBIE(27, "Zombie Horse", new String[]{ "EntityHorse", "ZombieHorse", "zombiehorse", "zombie-horse" }, "zombie-horse", 77),
     //28
     //29
