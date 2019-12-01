@@ -324,7 +324,7 @@ public class V1_2_TerrainChunkData extends TerrainChunkData {
             else {
                 String nm = (String)tg.getChildTagByKey("name").getValue();
 
-                shrt = 0;//(Short) tg.getChildTagByKey("name").getValue();
+                shrt = 255;//(Short) tg.getChildTagByKey("name").getValue();
             }
         }
         catch(Exception e)
@@ -333,6 +333,22 @@ public class V1_2_TerrainChunkData extends TerrainChunkData {
         }
 
         return shrt.shortValue();
+    }
+
+    public String getBlockKeyValue(int x, int y, int z, String key) {
+        String retValue = "";
+        if (x < chunkW && y < chunkH && z < chunkL && x >= 0 && y >= 0 && z >= 0) {
+            int runtimeID = runtimeIDs[getOffset(x, y, z)];
+
+            Tag palletEntry = pallet.get(runtimeID);
+            CompoundTag tg = ((CompoundTag)palletEntry);
+            if(tg.getChildTagByKey("states") != null) {
+                CompoundTag states = ((CompoundTag)tg.getChildTagByKey("states"));
+                if(states.getChildTagByKey(key) != null)
+                    retValue = (String)states.getChildTagByKey(key).getValue();
+            }
+        }
+        return retValue;
     }
 
     @Override

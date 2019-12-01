@@ -119,6 +119,15 @@ public class SatelliteRenderer implements MapRenderer {
                 if (id == 0) continue;//skip air blocks
 
                 meta = data.getBlockData(x, y, z) & 0xff;
+
+                // meta is 255 if the chunk version stores NBT keys rather than a single "val" meta tag
+                if(meta == 255) {
+                    Block tmpBlck = Block.getBlock(id, 0);
+                    String keyVal = data.getBlockKeyValue(x, y, z, tmpBlck.metaKey);
+
+                    meta = tmpBlck.getMetaByKeyValue(keyVal);
+                }
+
                 block = Block.getBlock(id, meta);
 
                 //try the default meta value: 0

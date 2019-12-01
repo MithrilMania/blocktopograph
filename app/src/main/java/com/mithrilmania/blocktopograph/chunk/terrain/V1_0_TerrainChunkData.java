@@ -209,6 +209,8 @@ public class V1_0_TerrainChunkData extends TerrainChunkData {
         }
     }
 
+    public String getBlockKeyValue(int x, int y, int z, String key) { return ""; }
+    
     private int getOffset(int x, int y, int z) {
         return (x * chunkW + z) * chunkH + y;
     }

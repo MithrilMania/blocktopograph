@@ -312,6 +312,8 @@ public class V1_2_beta_TerrainChunkData extends TerrainChunkData {
         return shrt.shortValue();
     }
 
+    public String getBlockKeyValue(int x, int y, int z, String key) { return ""; }
+
     @Override
     public byte getSkyLightValue(int x, int y, int z) {
         if (x >= chunkW || y >= chunkH || z >= chunkL || x < 0 || y < 0 || z < 0) {

@@ -21,6 +21,8 @@ public abstract class TerrainChunkData extends ChunkData {
 
     public abstract short getBlockData(int x, int y, int z);
 
+    public abstract String getBlockKeyValue(int x, int y, int z, String key);
+
     public abstract byte getSkyLightValue(int x, int y, int z);
 
     public abstract byte getBlockLightValue(int x, int y, int z);

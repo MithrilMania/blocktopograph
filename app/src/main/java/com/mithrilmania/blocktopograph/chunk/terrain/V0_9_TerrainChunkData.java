@@ -136,6 +136,8 @@ public class V0_9_TerrainChunkData extends TerrainChunkData {
         return (short) ((offset & 1) == 1 ? ((dualData >>> 4) & 0xf) : (dualData & 0xf));
     }
 
+    public String getBlockKeyValue(int x, int y, int z, String key) { return ""; }
+
     @Override
     public byte getSkyLightValue(int x, int y, int z) {
         if (x >= chunkW || y >= chunkH || z >= chunkL || x < 0 || y < 0 || z < 0) {

@@ -349,22 +349,22 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_168_2_PRISMARINE_BRICKS("minecraft:prismarine", "bricks", 168, 2, "blocks/prismarine_bricks.png", 0xff59Ad7e, false),
     B_169_0_SEALANTERN("minecraft:seaLantern", null, 169, 0, "blocks/seaLantern.png", 0xffe0eae4, false),
     B_170_0_HAY_BLOCK("minecraft:hay_block", null, 170, 0, "blocks/hay_block.png", 0xffa3870e, false),
-    B_171_0_CARPET_WHITE("minecraft:carpet", "white", 171, 0, "blocks/carpet_white.png", 0xffdddddd, false),
-    B_171_1_CARPET_ORANGE("minecraft:carpet", "orange", 171, 1, "blocks/carpet_orange.png", 0xffdb7d3e, false),
-    B_171_2_CARPET_MAGENTA("minecraft:carpet", "magenta", 171, 2, "blocks/carpet_magenta.png", 0xffb350bc, false),
-    B_171_3_CARPET_LIGHT_BLUE("minecraft:carpet", "light_blue", 171, 3, "blocks/carpet_light_blue.png", 0xff6a8ac9, false),
-    B_171_4_CARPET_YELLOW("minecraft:carpet", "yellow", 171, 4, "blocks/carpet_yellow.png", 0xffb1a627, false),
-    B_171_5_CARPET_LIME("minecraft:carpet", "lime", 171, 5, "blocks/carpet_lime.png", 0xff41ae38, false),
-    B_171_6_CARPET_PINK("minecraft:carpet", "pink", 171, 6, "blocks/carpet_pink.png", 0xffd08499, false),
-    B_171_7_CARPET_GRAY("minecraft:carpet", "gray", 171, 7, "blocks/carpet_gray.png", 0xff404040, false),
-    B_171_8_CARPET_SILVER("minecraft:carpet", "silver", 171, 8, "blocks/carpet_silver.png", 0xff9aa1a1, false),
-    B_171_9_CARPET_CYAN("minecraft:carpet", "cyan", 171, 9, "blocks/carpet_cyan.png", 0xff2e6e89, false),
-    B_171_10_CARPET_PURPLE("minecraft:carpet", "purple", 171, 10, "blocks/carpet_purple.png", 0xff7e3db5, false),
-    B_171_11_CARPET_BLUE("minecraft:carpet", "blue", 171, 11, "blocks/carpet_blue.png", 0xff2e388d, false),
-    B_171_12_CARPET_BROWN("minecraft:carpet", "brown", 171, 12, "blocks/carpet_brown.png", 0xff4f321f, false),
-    B_171_13_CARPET_GREEN("minecraft:carpet", "green", 171, 13, "blocks/carpet_green.png", 0xff35461b, false),
-    B_171_14_CARPET_RED("minecraft:carpet", "red", 171, 14, "blocks/carpet_red.png", 0xff963430, false),
-    B_171_15_CARPET_BLACK("minecraft:carpet", "black", 171, 15, "blocks/carpet_black.png", 0xff191616, false),
+    B_171_0_CARPET_WHITE("minecraft:carpet", "white", 171, 0, "blocks/carpet_white.png", 0xffdddddd, false, "color"),
+    B_171_1_CARPET_ORANGE("minecraft:carpet", "orange", 171, 1, "blocks/carpet_orange.png", 0xffdb7d3e, false, "color"),
+    B_171_2_CARPET_MAGENTA("minecraft:carpet", "magenta", 171, 2, "blocks/carpet_magenta.png", 0xffb350bc, false, "color"),
+    B_171_3_CARPET_LIGHT_BLUE("minecraft:carpet", "light_blue", 171, 3, "blocks/carpet_light_blue.png", 0xff6a8ac9, false, "color"),
+    B_171_4_CARPET_YELLOW("minecraft:carpet", "yellow", 171, 4, "blocks/carpet_yellow.png", 0xffb1a627, false, "color"),
+    B_171_5_CARPET_LIME("minecraft:carpet", "lime", 171, 5, "blocks/carpet_lime.png", 0xff41ae38, false, "color"),
+    B_171_6_CARPET_PINK("minecraft:carpet", "pink", 171, 6, "blocks/carpet_pink.png", 0xffd08499, false, "color"),
+    B_171_7_CARPET_GRAY("minecraft:carpet", "gray", 171, 7, "blocks/carpet_gray.png", 0xff404040, false, "color"),
+    B_171_8_CARPET_SILVER("minecraft:carpet", "silver", 171, 8, "blocks/carpet_silver.png", 0xff9aa1a1, false, "color"),
+    B_171_9_CARPET_CYAN("minecraft:carpet", "cyan", 171, 9, "blocks/carpet_cyan.png", 0xff2e6e89, false, "color"),
+    B_171_10_CARPET_PURPLE("minecraft:carpet", "purple", 171, 10, "blocks/carpet_purple.png", 0xff7e3db5, false, "color"),
+    B_171_11_CARPET_BLUE("minecraft:carpet", "blue", 171, 11, "blocks/carpet_blue.png", 0xff2e388d, false, "color"),
+    B_171_12_CARPET_BROWN("minecraft:carpet", "brown", 171, 12, "blocks/carpet_brown.png", 0xff4f321f, false, "color"),
+    B_171_13_CARPET_GREEN("minecraft:carpet", "green", 171, 13, "blocks/carpet_green.png", 0xff35461b, false, "color"),
+    B_171_14_CARPET_RED("minecraft:carpet", "red", 171, 14, "blocks/carpet_red.png", 0xff963430, false, "color"),
+    B_171_15_CARPET_BLACK("minecraft:carpet", "black", 171, 15, "blocks/carpet_black.png", 0xff191616, false, "color"),
     B_172_0_HARDENED_CLAY("minecraft:hardened_clay", null, 172, 0, "blocks/hardened_clay.png", 0xff5d3828, false),
     B_173_0_COAL_BLOCK("minecraft:coal_block", null, 173, 0, "blocks/coal_block.png", 0xff111111, false),
     B_174_0_PACKED_ICE("minecraft:packed_ice", null, 174, 0, "blocks/packed_ice.png", 0xff97b3e4, false),
@@ -557,22 +557,22 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_235_4_GLAZED_TERRACOTTA_BLACK("minecraft:black_glazed_terracotta", "black", 235, 4, "blocks/observer.png", 0xff050505, false),
     B_235_5_GLAZED_TERRACOTTA_BLACK("minecraft:black_glazed_terracotta", "black", 235, 5, "blocks/observer.png", 0xff050505, false),
 
-    B_236_0_CONCRETE_WHITE("minecraft:concrete", "orange", 236, 0, "blocks/observer.png", 0xffffffff, false),
-    B_236_1_CONCRETE_ORANGE("minecraft:concrete", "orange", 236, 1, "blocks/observer.png", 0xffffd030, false),
-    B_236_2_CONCRETE_MAGENTA("minecraft:concrete", "magenta", 236, 2, "blocks/observer.png", 0xffef007f, false),
-    B_236_3_CONCRETE_LIGHT_BLUE("minecraft:concrete", "light_blue", 236, 3, "blocks/observer.png", 0xff5588ff, false),
-    B_236_4_CONCRETE_YELLOW("minecraft:concrete", "yellow", 236, 4, "blocks/observer.png", 0xffffff40, false),
-    B_236_5_CONCRETE_LIME("minecraft:concrete", "lime", 236, 5, "blocks/observer.png", 0xff0db60e, false),
-    B_236_6_CONCRETE_PINK("minecraft:concrete", "pink", 236, 6, "blocks/observer.png", 0xffff6076, false),
-    B_236_7_CONCRETE_GRAY("minecraft:concrete", "gray", 236, 7, "blocks/observer.png", 0xff565656, false),
-    B_236_8_CONCRETE_SILVER("minecraft:concrete", "silver", 236, 8, "blocks/observer.png", 0xffa6a6a6, false),
-    B_236_9_CONCRETE_CYAN("minecraft:concrete", "cyan", 236, 9, "blocks/observer.png", 0xff0d5656, false),
-    B_236_10_CONCRETE_PURPLE("minecraft:concrete", "purple", 236, 10, "blocks/observer.png", 0xff560d56, false),
-    B_236_11_CONCRETE_BLUE("minecraft:concrete", "blue", 236, 11, "blocks/observer.png", 0xff0d0e56, false),
-    B_236_12_CONCRETE_BROWN("minecraft:concrete", "brown", 236, 12, "blocks/observer.png", 0xff804530, false),
-    B_236_13_CONCRETE_GREEN("minecraft:concrete", "green", 236, 13, "blocks/observer.png", 0xff0d560e, false),
-    B_236_14_CONCRETE_RED("minecraft:concrete", "red", 236, 14, "blocks/observer.png", 0xffff2020, false),
-    B_236_15_CONCRETE_BLACK("minecraft:concrete", "black", 236, 15, "blocks/observer.png", 0xff000000, false),
+    B_236_0_CONCRETE_WHITE("minecraft:concrete", "orange", 236, 0, "blocks/observer.png", 0xffffffff, false, "color"),
+    B_236_1_CONCRETE_ORANGE("minecraft:concrete", "orange", 236, 1, "blocks/observer.png", 0xffffd030, false, "color"),
+    B_236_2_CONCRETE_MAGENTA("minecraft:concrete", "magenta", 236, 2, "blocks/observer.png", 0xffef007f, false, "color"),
+    B_236_3_CONCRETE_LIGHT_BLUE("minecraft:concrete", "light_blue", 236, 3, "blocks/observer.png", 0xff5588ff, false, "color"),
+    B_236_4_CONCRETE_YELLOW("minecraft:concrete", "yellow", 236, 4, "blocks/observer.png", 0xffffff40, false, "color"),
+    B_236_5_CONCRETE_LIME("minecraft:concrete", "lime", 236, 5, "blocks/observer.png", 0xff0db60e, false, "color"),
+    B_236_6_CONCRETE_PINK("minecraft:concrete", "pink", 236, 6, "blocks/observer.png", 0xffff6076, false, "color"),
+    B_236_7_CONCRETE_GRAY("minecraft:concrete", "gray", 236, 7, "blocks/observer.png", 0xff565656, false, "color"),
+    B_236_8_CONCRETE_SILVER("minecraft:concrete", "silver", 236, 8, "blocks/observer.png", 0xffa6a6a6, false, "color"),
+    B_236_9_CONCRETE_CYAN("minecraft:concrete", "cyan", 236, 9, "blocks/observer.png", 0xff0d5656, false, "color"),
+    B_236_10_CONCRETE_PURPLE("minecraft:concrete", "purple", 236, 10, "blocks/observer.png", 0xff560d56, false, "color"),
+    B_236_11_CONCRETE_BLUE("minecraft:concrete", "blue", 236, 11, "blocks/observer.png", 0xff0d0e56, false, "color"),
+    B_236_12_CONCRETE_BROWN("minecraft:concrete", "brown", 236, 12, "blocks/observer.png", 0xff804530, false, "color"),
+    B_236_13_CONCRETE_GREEN("minecraft:concrete", "green", 236, 13, "blocks/observer.png", 0xff0d560e, false, "color"),
+    B_236_14_CONCRETE_RED("minecraft:concrete", "red", 236, 14, "blocks/observer.png", 0xffff2020, false, "color"),
+    B_236_15_CONCRETE_BLACK("minecraft:concrete", "black", 236, 15, "blocks/observer.png", 0xff000000, false, "color"),
 
     B_237_0_CONCRETE_POWDER_WHITE("minecraft:concretePowder", "white", 237, 0, "blocks/observer.png", 0xffffffff, false),
     B_237_1_CONCRETE_POWDER_ORANGE("minecraft:concretePowder", "orange", 237, 1, "blocks/observer.png", 0xffffd030, false),
@@ -3269,6 +3269,7 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     public final int id, subId;
 
     public final String name, subName, displayName;
+    public String metaKey = "";
 
     public final String texPath;
 
@@ -3286,6 +3287,18 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
         this.texPath = texPath;
         this.color = Color.fromARGB(color);
         this.hasBiomeShading = hasBiomeShading;
+    }
+
+    Block(String name, String subName, int id, int subId, String texPath, int color, boolean hasBiomeShading, String keyTag){
+        this.id = id;
+        this.subId = subId;
+        this.name = name;
+        this.subName = subName;
+        this.displayName = name + " " + subName;
+        this.texPath = texPath;
+        this.color = Color.fromARGB(color);
+        this.hasBiomeShading = hasBiomeShading;
+        this.metaKey = keyTag;
     }
 
     Block(String name, String subName, int id, int subId, String texPath){
@@ -3362,7 +3375,50 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
         if(id < 0) return null;
         SparseArray<Block> subMap = blockMap.get(id);
         if(subMap == null) return null;
-        else return subMap.get(meta);
+        else {
+            if(meta == -1)
+                meta = 0;
+            return subMap.get(meta);
+        }
+    }
+
+    public int getMetaByKeyValue(String keyValue)
+    {
+        int retVal = 0;
+
+        switch(name.replace("minecraft:", "")) {
+            case "concrete":
+            {
+                switch(keyValue) {
+                    case "blue": {
+                        retVal = 11;
+                        break;
+                    }
+                    case "cyan": {
+                        retVal = 9;
+                        break;
+                    }
+                    case "green": {
+                        retVal = 13;
+                        break;
+                    }
+                    case "black": {
+                        retVal = 15;
+                        break;
+                    }
+                }
+            }
+            case "carpet":
+            {
+                switch(keyValue) {
+                    case "green": {
+                        retVal = 13;
+                        break;
+                    }
+                }
+            }
+        }
+        return retVal;
     }
 
 }
