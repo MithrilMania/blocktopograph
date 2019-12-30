@@ -57,7 +57,7 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     WITCH(45, "Witch", new String[]{ "Witch", "witch" }, "witch", 54),
     SKELETON_STRAY(46, "Stray", new String[]{ "Skeleton", "StraySkeleton", "strayskeleton", "stray"}, "stray", 98),
     ZOMBIE_HUSK(47, "Husk", new String[]{ "Zombie", "HuskZombie", "husk", "huskzombie" }, "husk", 99),
-    SKELETON_WITHER(48, "Wither Skeleton", new String[]{ "Skeleton", "WitherSkeleton", "wither" }, "wither", 61),
+    SKELETON_WITHER(48, "Wither Skeleton", new String[]{ "Skeleton", "WitherSkeleton", "wither", "wither_skeleton" }, "wither", 61),
     GUARDIAN(49, "Guardian", new String[]{ "Guardian", "guardian" }, "guardian", 87),
     ELDER_GAURDIAN(50, "Elder Gaurdian", new String[]{ "ElderGaurdian", "elder-guardian", "elderguardian" }, "elder-gaurdian", 88),
     NPC(51, "NPC", new String[]{ "Npc", "npc" }, "npc", 100),
