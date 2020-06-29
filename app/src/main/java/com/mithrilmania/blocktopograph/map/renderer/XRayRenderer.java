@@ -7,6 +7,7 @@ import com.mithrilmania.blocktopograph.chunk.ChunkManager;
 import com.mithrilmania.blocktopograph.chunk.Version;
 import com.mithrilmania.blocktopograph.chunk.terrain.TerrainChunkData;
 import com.mithrilmania.blocktopograph.map.Block;
+import com.mithrilmania.blocktopograph.map.BlockDatabase;
 import com.mithrilmania.blocktopograph.map.Dimension;
 
 
@@ -35,6 +36,7 @@ public class XRayRenderer implements MapRenderer {
      *
      * @throws Version.VersionException when the version of the chunk is unsupported.
      */
+    private BlockDatabase _blockDB = BlockDatabase.getDatabase();
     public Bitmap renderToBitmap(ChunkManager cm, Bitmap bm, Dimension dimension, int chunkX, int chunkZ, int bX, int bZ, int eX, int eZ, int pX, int pY, int pW, int pL) throws Version.VersionException {
 
         Chunk chunk = cm.getChunk(chunkX, chunkZ);
@@ -45,7 +47,6 @@ public class XRayRenderer implements MapRenderer {
 
         //the bottom sub-chunk is sufficient to get heightmap data.
         TerrainChunkData data;
-
 
         int x, y, z, color, i, j, tX, tY;
 
@@ -71,20 +72,20 @@ public class XRayRenderer implements MapRenderer {
                 for (x = bX; x < eX; x++) {
 
                     for (y = 0; y < cVersion.subChunkHeight; y++) {
-                        block = Block.getBlock(data.getBlockTypeId(x, y, z) & 0xff, 0);
+                        block = _blockDB.getBlock(data.getBlockTypeId(x, y, z) & 0xff, 0);
 
                         index2D = ((z - bZ) * rW) + (x - bX);
                         if (block == null || block.id <= 1)
                             continue;
-                        else if (block == Block.B_56_0_DIAMOND_ORE) {
+                        else if (block == _blockDB.B_56_0_DIAMOND_ORE()) {
                             bestBlock[index2D] = block;
                             break;
-                        } else if (block == Block.B_129_0_EMERALD_ORE) bValue = 8;
-                        else if (block == Block.B_153_0_QUARTZ_ORE) bValue = 7;
-                        else if (block == Block.B_14_0_GOLD_ORE) bValue = 6;
-                        else if (block == Block.B_15_0_IRON_ORE) bValue = 5;
-                        else if (block == Block.B_73_0_REDSTONE_ORE) bValue = 4;
-                        else if (block == Block.B_21_0_LAPIS_ORE) bValue = 3;
+                        } else if (block == _blockDB.B_129_0_EMERALD_ORE()) bValue = 8;
+                        else if (block == _blockDB.B_153_0_QUARTZ_ORE()) bValue = 7;
+                        else if (block == _blockDB.B_14_0_GOLD_ORE()) bValue = 6;
+                        else if (block == _blockDB.B_15_0_IRON_ORE()) bValue = 5;
+                        else if (block == _blockDB.B_73_0_REDSTONE_ORE()) bValue = 4;
+                        else if (block == _blockDB.B_21_0_LAPIS_ORE()) bValue = 3;
                             //else if(block == Block.COAL_ORE) bValue = 2;
                             //else if(b == Block.LAVA || b == Block.STATIONARY_LAVA) bValue = 1;
                         else bValue = 0;

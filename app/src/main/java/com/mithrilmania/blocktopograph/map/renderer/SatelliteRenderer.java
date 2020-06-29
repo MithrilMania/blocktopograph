@@ -8,6 +8,7 @@ import com.mithrilmania.blocktopograph.chunk.ChunkManager;
 import com.mithrilmania.blocktopograph.chunk.Version;
 import com.mithrilmania.blocktopograph.chunk.terrain.TerrainChunkData;
 import com.mithrilmania.blocktopograph.map.Block;
+import com.mithrilmania.blocktopograph.map.BlockDatabase;
 import com.mithrilmania.blocktopograph.map.Dimension;
 
 
@@ -32,6 +33,8 @@ public class SatelliteRenderer implements MapRenderer {
      *
      * @throws Version.VersionException when the version of the chunk is unsupported.
      */
+    private static BlockDatabase _blockDB = BlockDatabase.getDatabase();
+
     public Bitmap renderToBitmap(ChunkManager cm, Bitmap bm, Dimension dimension, int chunkX, int chunkZ, int bX, int bZ, int eX, int eZ, int pX, int pY, int pW, int pL) throws Version.VersionException {
 
         Chunk chunk = cm.getChunk(chunkX, chunkZ);
@@ -122,16 +125,25 @@ public class SatelliteRenderer implements MapRenderer {
 
                 // meta is 255 if the chunk version stores NBT keys rather than a single "val" meta tag
                 if(meta == 255) {
-                    Block tmpBlck = Block.getBlock(id, 0);
-                    String keyVal = data.getBlockKeyValue(x, y, z, tmpBlck.metaKey);
+                    Block tmpBlck = _blockDB.getBlock(id, 0);
+                    if(tmpBlck != null) {
+                        String keyVal = data.getBlockKeyValue(x, y, z, tmpBlck.metaKey);
 
-                    meta = tmpBlck.getMetaByKeyValue(keyVal);
+                        meta = tmpBlck.getMetaByKeyValue(keyVal);
+                    }
+                    else
+                    {
+                        Log.w("No meta key for block id " + id);
+
+                        id = data.getBlockTypeId(x, y, z) & 0xff;
+                    }
+
                 }
 
-                block = Block.getBlock(id, meta);
+                block = _blockDB.getBlock(id, meta);
 
                 //try the default meta value: 0
-                if (block == null) block = Block.getBlock(id, 0);
+                if (block == null) block = _blockDB.getBlock(id, 0);
 
                 //TODO log null blocks to debug missing blocks
                 if (block == null) {

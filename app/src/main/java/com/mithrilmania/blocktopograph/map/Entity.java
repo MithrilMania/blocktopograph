@@ -36,10 +36,10 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     HORSE_DONKEY(24, "Donkey", new String[]{ "EntityHorse", "Donkey", "donkey" }, "donkey", 74),
     HORSE_MULE(25, "Mule", new String[]{ "EntityHorse", "Mule", "mule" }, "mule", 75),
     HORSE_SKELETON(26, "Skeleten Horse", new String[]{ "skeleton_horse", "EntityHorse", "SkeletonHorse", "skeletonhorse", "skeleton-horse" }, "skeleton-horse", 76),
-    HORSE_ZOMBIE(27, "Zombie Horse", new String[]{ "EntityHorse", "ZombieHorse", "zombiehorse", "zombie-horse" }, "zombie-horse", 77),
+    HORSE_ZOMBIE(27, "Zombie Horse", new String[]{ "EntityHorse", "ZombieHorse", "zombiehorse", "zombie-horse", "zombie_horse" }, "zombie-horse", 77),
     //28
     //29
-    ARMOR_STAND(30, "Armor Stand", new String[]{ "ArmorStand", "armorstand" }, "TODO", 106),
+    ARMOR_STAND(30, "Armor Stand", new String[]{ "ArmorStand", "armorstand", "armor_stand" }, "TODO", 106),
     //31
     ZOMBIE(32, "Zombie", new String[]{ "Zombie", "zombie" }, "zombie", 9),
     CREEPER(33, "Creeper", new String[]{ "Creeper", "creeper" }, "creeper", 14),
@@ -106,8 +106,8 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     LIGHTNING(93, "Lightning Bolt", new String[]{ "LightningBolt", "lightning", "lightningbolt" }, "lightning", 58),
     SMALL_FIREBALL(94, "Blaze Fireball", new String[]{ "SmallFireball", "smallfireball" }, "fireball", 44),
     AREA_EFFECT_CLOUD(95, "Area effect cloud", new String[]{ "AreaEffectCloud", "area-effect-cloud", "areaeffectcloud" }, "area-effect-cloud", 144),
-    MINECART_HOPPER(96, "Minecart with Hopper", new String[]{ "MinecartHopper", "minecart-with-hopper", "minecarthopper" }, "minecart-with-hopper", 70),
-    MINECART_TNT(97, "Minecart with TNT", new String[]{ "MinecartTNT", "minecart-with-tnt", "minecarttnt" }, "minecart-with-tnt", 69),
+    MINECART_HOPPER(96, "Minecart with Hopper", new String[]{ "MinecartHopper", "minecart-with-hopper", "minecarthopper", "hopper_minecart" }, "minecart-with-hopper", 70),
+    MINECART_TNT(97, "Minecart with TNT", new String[]{ "MinecartTNT", "minecart-with-tnt", "minecarttnt", "tnt_minecart" }, "minecart-with-tnt", 69),
     MINECART_CHEST(98, "Storage Minecart", new String[]{ "MinecartChest", "minecart-chest", "minecartchest", "chest_minecart" }, "minecart-chest", 35),
     LINGERING_POTION(101, "Lingering potion", new String[]{ "LingeringPotion", "lingeringpotion", "lingering-potion" }, "lingering-potion", 144),
 

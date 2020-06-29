@@ -2,6 +2,7 @@ package com.mithrilmania.blocktopograph.chunk.terrain;
 
 import com.mithrilmania.blocktopograph.chunk.Chunk;
 import com.mithrilmania.blocktopograph.chunk.ChunkData;
+import com.mithrilmania.blocktopograph.map.BlockDatabase;
 
 
 public abstract class TerrainChunkData extends ChunkData {
@@ -11,7 +12,10 @@ public abstract class TerrainChunkData extends ChunkData {
     public TerrainChunkData(Chunk chunk, byte subChunk) {
         super(chunk);
         this.subChunk = subChunk;
+        this._blockDB = BlockDatabase.getDatabase();
     }
+
+    protected final BlockDatabase _blockDB;
 
     public abstract boolean loadTerrain();
 

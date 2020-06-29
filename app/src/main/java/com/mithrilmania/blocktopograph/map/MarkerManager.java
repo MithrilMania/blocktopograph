@@ -53,6 +53,7 @@ public class MarkerManager {
     // 1 "Test \" marker" "default \" \"_ma 1 rker 1" 1234 64 4321 overworld ;
     private static final Pattern formatRegex = Pattern.compile("(\\d+)\\s+\"(?:(?:(.+?[^\\\\]))|)\"\\s+\"(?:(?:(.+?[^\\\\]))|)\"\\s+(\\d+?)\\s+(\\d+?)\\s+(\\d+?)\\s+(.+?)\\s*;");
 
+    private static final BlockDatabase _blockDB = BlockDatabase.getDatabase();
 
     private final ExecutorService executorService;
     private final File markerFile;
@@ -144,7 +145,6 @@ public class MarkerManager {
         return markers;
     }
 
-
     /**
      * Saves the current markers, if and only if the markers were changed.
      */
@@ -193,7 +193,7 @@ public class MarkerManager {
 
     public static AbstractMarker markerFromData(String displayName, String iconName, int x, int y, int z, Dimension dimension){
 
-        NamedBitmapProvider nbp = Block.getByDataName(iconName);
+        NamedBitmapProvider nbp = _blockDB.getByDataName(iconName);
         if(nbp == null || nbp.getBitmap() == null) nbp = Entity.getEntity(iconName);
         if(nbp == null || nbp.getBitmap() == null) nbp = TileEntity.getTileEntity(iconName);
         if(nbp == null || nbp.getBitmap() == null) nbp = CustomIcon.getCustomIcon(iconName);

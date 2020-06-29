@@ -26,14 +26,14 @@ import java.util.Map;
  *
  --- Please attribute @mithrilmania for generating+updating this enum
  */
-public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
+public class Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
 
   /*
    * ==============================
    *       Blocks
    * ==============================
    */
-
+/*
     B_0_0_AIR("minecraft:air", null, 0, 0, null, 0x00000000, false),
     B_1_0_STONE("minecraft:stone", "stone", 1, 0, "blocks/stone.png", 0xff464646, false),
     B_1_1_STONE_GRANITE("minecraft:stone", "granite", 1, 1, "blocks/stone_granite.png", 0xff8c7167, false),
@@ -198,9 +198,7 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_81_0_CACTUS("minecraft:cactus", null, 81, 0, "blocks/cactus.png", 0xc30d6318, false),
     B_82_0_CLAY("minecraft:clay", null, 82, 0, "blocks/clay.png", 0xff9ea4b0, false),
     B_83_0_REEDS("minecraft:reeds", null, 83, 0, "blocks/reeds.png", 0x8c94c065, false),
-
     B_84_0_JUKEBOX("minecraft:jukebox", null, 84, 0, "blocks/fence_birch_fence.png", 0x8f463822, false),
-
     B_85_0_FENCE_FENCE("minecraft:fence", "fence", 85, 0, "blocks/fence_fence.png", 0x8f463822, false),
     B_85_1_FENCE_SPRUCE_FENCE("minecraft:fence", "spruce_fence", 85, 1, "blocks/fence_spruce_fence.png", 0x8f5a3d0d, false),
     B_85_2_FENCE_BIRCH_FENCE("minecraft:fence", "birch_fence", 85, 2, "blocks/fence_birch_fence.png", 0x8fdabd8d, false),
@@ -374,11 +372,9 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_175_3_DOUBLE_PLANT_FERN("minecraft:double_plant", "fern", 175, 3, "blocks/double_plant_fern.png", 0xb43d5d34, false),
     B_175_4_DOUBLE_PLANT_ROSE("minecraft:double_plant", "rose", 175, 4, "blocks/double_plant_rose.png", 0xb4d10609, false),
     B_175_5_DOUBLE_PLANT_PAEONIA("minecraft:double_plant", "paeonia", 175, 5, "blocks/double_plant_paeonia.png", 0xb4d6c1df, false),
-
     B_176_0_BANNER("minecraft:banner", null, 176, 0, "blocks/double_plant_paeonia.png", 0xff9aa1a1, false),
     B_176_8_BANNER("minecraft:banner", null, 176, 8, "blocks/double_plant_paeonia.png", 0xff9aa1a1, false),
     B_176_12_BANNER("minecraft:banner", null, 176, 12, "blocks/double_plant_paeonia.png", 0xff9aa1a1, false),
-
     B_178_0_DAYLIGHT_DETECTOR_INVERTED("minecraft:daylight_detector_inverted", null, 178, 0, "blocks/daylight_detector_inverted.png", 0xffd8c9b5, false),
     B_179_0_RED_SANDSTONE_DEFAULT("minecraft:red_sandstone", "default", 179, 0, "blocks/red_sandstone_default.png", 0xffaa561e, false),
     B_179_1_RED_SANDSTONE_CHISELED("minecraft:red_sandstone", "chiseled", 179, 1, "blocks/red_sandstone_chiseled.png", 0xffa8551e, false),
@@ -393,7 +389,6 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_185_0_JUNGLE_FENCE_GATE("minecraft:jungle_fence_gate", null, 185, 0, "blocks/jungle_fence_gate.png", 0x8fBa7d5d, false),
     B_186_0_DARK_OAK_FENCE_GATE("minecraft:dark_oak_fence_gate", null, 186, 0, "blocks/dark_oak_fence_gate.png", 0x8f2d2213, false),
     B_187_0_ACACIA_FENCE_GATE("minecraft:acacia_fence_gate", null, 187, 0, "blocks/acacia_fence_gate.png", 0x8f934f39, false),
-
     B_188_0_REPEATING_COMMAND_BLOCK("minecraft:repeating_command_block", null, 188, 0, "blocks/command_block.png", 0x00000000, false),
     B_188_1_REPEATING_COMMAND_BLOCK("minecraft:repeating_command_block", null, 188, 1, "blocks/command_block.png", 0x00000000, false),
     B_188_2_REPEATING_COMMAND_BLOCK("minecraft:repeating_command_block", null, 188, 2, "blocks/command_block.png", 0x00000000, false),
@@ -410,7 +405,6 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_188_13_REPEATING_COMMAND_BLOCK("minecraft:repeating_command_block", null, 188, 13, "blocks/command_block.png", 0x00000000, false),
     B_188_14_REPEATING_COMMAND_BLOCK("minecraft:repeating_command_block", null, 188, 14, "blocks/command_block.png", 0x00000000, false),
     B_188_15_REPEATING_COMMAND_BLOCK("minecraft:repeating_command_block", null, 188, 15, "blocks/command_block.png", 0x00000000, false),
-
     B_189_0_CHAIN_COMMAND_BLOCK("minecraft:chain_command_block", null, 189, 0, "blocks/command_block.png", 0x00000000, false),
     B_189_1_CHAIN_COMMAND_BLOCK("minecraft:chain_command_block", null, 189, 1, "blocks/command_block.png", 0x00000000, false),
     B_189_2_CHAIN_COMMAND_BLOCK("minecraft:chain_command_block", null, 189, 2, "blocks/command_block.png", 0x00000000, false),
@@ -427,9 +421,7 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_189_13_CHAIN_COMMAND_BLOCK("minecraft:chain_command_block", null, 189, 13, "blocks/command_block.png", 0x00000000, false),
     B_189_14_CHAIN_COMMAND_BLOCK("minecraft:chain_command_block", null, 189, 14, "blocks/command_block.png", 0x00000000, false),
     B_189_15_CHAIN_COMMAND_BLOCK("minecraft:chain_command_block", null, 189, 15, "blocks/command_block.png", 0x00000000, false),
-
     B_190_0_HARD_GLASS_PANE("minecraft:hard_glass_pane", null, 190, 0, "blocks/glass_pane_top.png", 0x00000000, false),
-
     B_191_0_HARD_STAINED_GLASS_PANE("minecraft:hard_stained_glass_pane", null, 191, 0, "blocks/glass_pane_top.png", 0x00000000, false),
     B_191_1_HARD_STAINED_GLASS_PANE("minecraft:hard_stained_glass_pane", null, 191, 1, "blocks/glass_pane_top.png", 0x00000000, false),
     B_191_2_HARD_STAINED_GLASS_PANE("minecraft:hard_stained_glass_pane", null, 191, 2, "blocks/glass_pane_top.png", 0x00000000, false),
@@ -446,9 +438,7 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_191_13_HARD_STAINED_GLASS_PANE("minecraft:hard_stained_glass_pane", null, 191, 13, "blocks/glass_pane_top.png", 0x00000000, false),
     B_191_14_HARD_STAINED_GLASS_PANE("minecraft:hard_stained_glass_pane", null, 191, 14, "blocks/glass_pane_top.png", 0x00000000, false),
     B_191_15_HARD_STAINED_GLASS_PANE("minecraft:hard_stained_glass_pane", null, 191, 15, "blocks/glass_pane_top.png", 0x00000000, false),
-
     B_192_0_CHEMICAL_HEAT("minecraft:chemical_heat", null, 192, 0, "blocks/fire_0.png", 0x00000000, false),
-
     B_193_0_SPRUCE_DOOR("minecraft:spruce_door", null, 193, 0, "blocks/spruce_door.png", 0xff5a3d0d, false),
     B_194_0_BIRCH_DOOR("minecraft:birch_door", null, 194, 0, "blocks/birch_door.png", 0xffdabd8d, false),
     B_195_0_JUNGLE_DOOR("minecraft:jungle_door", null, 195, 0, "blocks/jungle_door.png", 0xffBa7d5d, false),
@@ -473,7 +463,6 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_214_0_NETHERWART_BLOCK("minecraft:nether_wart_block", "default", 214, 0, "blocks/quartz_block_default.png", 0xffbf2030, false),
     B_215_0_RED_NETHER_BRICK("minecraft:red_nether_brick", "default", 215, 0, "blocks/quartz_block_default.png", 0xff7f1020, false),
     B_216_0_BONE("minecraft:bone_block", "default", 216, 0, "blocks/quartz_block_default.png", 0xffefe5d2, false),
-
     B_218_0_SHULKERBOX_WHITE("minecraft:shulker_box", "white", 218, 0, "blocks/observer.png", 0xffffffff, false),
     B_218_1_SHULKERBOX_ORANGE("minecraft:shulker_box", "orange", 218, 1, "blocks/observer.png", 0xffffd030, false),
     B_218_2_SHULKERBOX_MAGENTA("minecraft:shulker_box", "magenta", 218, 2, "blocks/observer.png", 0xffef007f, false),
@@ -490,7 +479,6 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_218_13_SHULKERBOX_GREEN("minecraft:shulker_box", "green", 218, 13, "blocks/observer.png", 0xff0d560e, false),
     B_218_14_SHULKERBOX_RED("minecraft:shulker_box", "red", 218, 14, "blocks/observer.png", 0xffff2020, false),
     B_218_15_SHULKERBOX_BLACK("minecraft:shulker_box", "black", 218, 15, "blocks/observer.png", 0xff000000, false),
-
     B_219_2_GLAZED_TERRACOTTA_PURPLE("minecraft:purple_glazed_terracotta", "purple", 219, 2, "blocks/observer.png", 0xff762d76, false),
     B_219_3_GLAZED_TERRACOTTA_PURPLE("minecraft:purple_glazed_terracotta", "purple", 219, 3, "blocks/observer.png", 0xff762d76, false),
     B_219_4_GLAZED_TERRACOTTA_PURPLE("minecraft:purple_glazed_terracotta", "purple", 219, 4, "blocks/observer.png", 0xff762d76, false),
@@ -556,7 +544,6 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_235_3_GLAZED_TERRACOTTA_BLACK("minecraft:black_glazed_terracotta", "black", 235, 3, "blocks/observer.png", 0xff050505, false),
     B_235_4_GLAZED_TERRACOTTA_BLACK("minecraft:black_glazed_terracotta", "black", 235, 4, "blocks/observer.png", 0xff050505, false),
     B_235_5_GLAZED_TERRACOTTA_BLACK("minecraft:black_glazed_terracotta", "black", 235, 5, "blocks/observer.png", 0xff050505, false),
-
     B_236_0_CONCRETE_WHITE("minecraft:concrete", "orange", 236, 0, "blocks/observer.png", 0xffffffff, false, "color"),
     B_236_1_CONCRETE_ORANGE("minecraft:concrete", "orange", 236, 1, "blocks/observer.png", 0xffffd030, false, "color"),
     B_236_2_CONCRETE_MAGENTA("minecraft:concrete", "magenta", 236, 2, "blocks/observer.png", 0xffef007f, false, "color"),
@@ -591,6 +578,10 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_237_14_CONCRETE_POWDER_RED("minecraft:concretePowder", "brown", 237, 14, "blocks/observer.png", 0xffff2020, false),
     B_237_15_CONCRETE_POWDER_BLACK("minecraft:concretePowder", "black", 237, 15, "blocks/observer.png", 0xff000000, false),
 
+    */
+
+
+/*---------------------------------------------------------------------------------------------------------------------------
     B_238_0_CHEMISTRY_TABLE("minecraft:chemistry_table", "orange", 238, 0, "blocks/observer.png", 0xffffffff, false),
     B_238_1_CHEMISTRY_TABLE("minecraft:chemistry_table", "orange", 238, 1, "blocks/observer.png", 0xffffd030, false),
     B_238_2_CHEMISTRY_TABLE("minecraft:chemistry_table", "magenta", 238, 2, "blocks/observer.png", 0xffef007f, false),
@@ -616,7 +607,9 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_239_5_UNDERWATER_TORCH("minecraft:underwater_torch", "lime", 239, 5, "blocks/observer.png", 0xff0db60e, false),
     B_239_6_UNDERWATER_TORCH("minecraft:underwater_torch", "pink", 239, 6, "blocks/observer.png", 0xffff6076, false),
     B_239_7_UNDERWATER_TORCH("minecraft:underwater_torch", "gray", 239, 7, "blocks/observer.png", 0xff565656, false),
+------------------------------------------------------------------------------------------------------------------------*/
 
+/*
     B_240_0_CHORUS_PLANT("minecraft:chorus_plant", null, 240, 0, "blocks/chorus_plant.png", 0xaa3d6e86, false),
     B_241_0_STAINED_GLASS_WHITE("minecraft:stained_glass", "white", 241, 0, "blocks/stained_glass_white.png", 0x50836f64, false),
     B_241_1_STAINED_GLASS_ORANGE("minecraft:stained_glass", "orange", 241, 1, "blocks/stained_glass_orange.png", 0x509d5021, false),
@@ -744,6 +737,12 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_2201_3_stripped_oak_log("minecraft:stripped_oak_log", "", 2201, 3, "blocks/observer.png", 0xff9a7d4d, false),
     B_2202_0_blue_ice("minecraft:blue_ice", "", 2202, 0, "blocks/observer.png", 0xff7dbeF6, false),
 
+    */
+
+
+
+
+    /////////////////////////////////////////////////////////////////////////////////////////////////
     /*
     B_2203_0_element_1("minecraft:element_1", "", 2203, 0, "blocks/observer.png", 0xff3d6e86, false),
     B_2204_1_element_1("minecraft:element_1", "", 2204, 1, "blocks/observer.png", 0xff3d6e86, false),
@@ -2633,7 +2632,9 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_4088_13_element_118("minecraft:element_118", "", 4088, 13, "blocks/observer.png", 0xff3d6e86, false),
     B_4089_14_element_118("minecraft:element_118", "", 4089, 14, "blocks/observer.png", 0xff3d6e86, false),
     B_4090_15_element_118("minecraft:element_118", "", 4090, 15, "blocks/observer.png", 0xff3d6e86, false),
-    */
+    -------------------------------------------------------------------------------------------------------------*/
+
+    /*
     B_4091_0_seagrass("minecraft:seagrass", "", 4091, 0, "blocks/observer.png", 0x4e787878, false),
     B_4092_1_seagrass("minecraft:seagrass", "", 4092, 1, "blocks/observer.png", 0x4e787878, false),
     B_4093_2_seagrass("minecraft:seagrass", "", 4093, 2, "blocks/observer.png", 0x4e787878, false),
@@ -3042,13 +3043,17 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     B_4478_0_BUBBLE_COLUMN("minecraft:bubble_column", "bubble column", 4478, 0, "blocks/water_still.png", 0xff9f9f9f, false),
     B_4479_0_STANDING_BANNER("minecraft:standing_banner", "standing banner", 4479, 0, "blocks/double_plant_paeonia.png", 0xff9f9f9f, false),
 
-
+    B_4480_0_BEEHIVE("minecraft:beehive", "beehive", 4480, 0, "", 0xffc0a915, false),
+    B_4481_0_HONEYCOMB("minecraft:honeycomb_block", "honeycomb", 4481, 0, "", 0xfff0d41f, false),
+    B_4482_0_HONEY("minecraft:honey_block", "honey", 4482, 0, "", 0xfffaea87, false),
+    B_4483_0_SMOOTH_STONE("minecraft:smooth_stone", "smooth stone", 4483, 0, "blocks/stonebrick_smooth.png", 0xff767676, false),
+    /*
   /*
    * ==============================
    *        Items
    * ==============================
    */
-
+/*
     I_256_0_IRON_SHOVEL("iron_shovel", null, 256, 0, "items/iron_shovel.png"),
     I_257_0_IRON_PICKAXE("iron_pickaxe", null, 257, 0, "items/iron_pickaxe.png"),
     I_258_0_IRON_AXE("iron_axe", null, 258, 0, "items/iron_axe.png"),
@@ -3264,7 +3269,7 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
     I_454_2_BOARD_THREE_BY_TWO("board", "three_by_two", 454, 2, "items/chalkboard_large.png"),
     I_456_0_PORTFOLIO("portfolio", null, 456, 0, "items/portfolio.png"),
     I_498_0_CAMERA("camera", null, 498, 0, "items/camera.png");
-
+*/
 
     public final int id, subId;
 
@@ -3278,7 +3283,7 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
 
     public Bitmap bitmap;
 
-    Block(String name, String subName, int id, int subId, String texPath, int color, boolean hasBiomeShading){
+    public Block(String name, String subName, int id, int subId, String texPath, int color, boolean hasBiomeShading){
         this.id = id;
         this.subId = subId;
         this.name = name;
@@ -3289,7 +3294,7 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
         this.hasBiomeShading = hasBiomeShading;
     }
 
-    Block(String name, String subName, int id, int subId, String texPath, int color, boolean hasBiomeShading, String keyTag){
+    public Block(String name, String subName, int id, int subId, String texPath, int color, boolean hasBiomeShading, String keyTag){
         this.id = id;
         this.subId = subId;
         this.name = name;
@@ -3301,7 +3306,7 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
         this.metaKey = keyTag;
     }
 
-    Block(String name, String subName, int id, int subId, String texPath){
+    public Block(String name, String subName, int id, int subId, String texPath){
         this.id = id;
         this.subId = subId;
         this.name = name;
@@ -3335,53 +3340,6 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
         return name + "@" + subName;
     }
 
-    private static final Map<String, Block> byDataName = new HashMap<>();
-    private static final SparseArray<SparseArray<Block>> blockMap;
-    static {
-        blockMap = new SparseArray<>();
-        SparseArray<Block> subMap;
-        for(Block b : Block.values()){
-            subMap = blockMap.get(b.id);
-            if(subMap == null){
-                subMap = new SparseArray<>();
-                blockMap.put(b.id, subMap);
-            }
-            subMap.put(b.subId, b);
-            if(b.subId == 0) byDataName.put(b.name, b);
-            byDataName.put(b.name + "@" + b.subName, b);
-        }
-    }
-
-    public static Block getByDataName(String dataName){
-        return byDataName.get(dataName);
-    }
-
-    public static void loadBitmaps(AssetManager assetManager) throws IOException {
-        for(Block b : Block.values()){
-            if(b.bitmap == null && b.texPath != null){
-                try {
-                    b.bitmap = Bitmap.createScaledBitmap(BitmapFactory.decodeStream(assetManager.open(b.texPath)), 32, 32, false);
-                } catch(FileNotFoundException e){
-                    //TODO file-paths were generated from block names; some do not actually exist...
-                    //Log.w("File not found! "+b.texPath);
-                } catch (Exception e){
-                    e.printStackTrace();
-                }
-            }
-        }
-    }
-
-    public static Block getBlock(int id, int meta){
-        if(id < 0) return null;
-        SparseArray<Block> subMap = blockMap.get(id);
-        if(subMap == null) return null;
-        else {
-            if(meta == -1)
-                meta = 0;
-            return subMap.get(meta);
-        }
-    }
-
     public int getMetaByKeyValue(String keyValue)
     {
         int retVal = 0;
@@ -3413,6 +3371,16 @@ public enum Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
                 switch(keyValue) {
                     case "green": {
                         retVal = 13;
+                        break;
+                    }
+                }
+            }
+            case "sand":
+            {
+                // 0 for regular, 1 for red
+                switch(keyValue) {
+                    case "red": {
+                        retVal = 1;
                         break;
                     }
                 }

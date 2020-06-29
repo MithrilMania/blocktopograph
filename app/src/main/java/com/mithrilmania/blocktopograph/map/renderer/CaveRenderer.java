@@ -9,6 +9,7 @@ import com.mithrilmania.blocktopograph.chunk.ChunkManager;
 import com.mithrilmania.blocktopograph.chunk.Version;
 import com.mithrilmania.blocktopograph.chunk.terrain.TerrainChunkData;
 import com.mithrilmania.blocktopograph.map.Block;
+import com.mithrilmania.blocktopograph.map.BlockDatabase;
 import com.mithrilmania.blocktopograph.map.Dimension;
 
 
@@ -34,6 +35,9 @@ public class CaveRenderer implements MapRenderer {
      *
      * @throws Version.VersionException when the version of the chunk is unsupported.
      */
+
+    private BlockDatabase _blockDB = BlockDatabase.getDatabase();
+
     public Bitmap renderToBitmap(ChunkManager cm, Bitmap bm, Dimension dimension, int chunkX, int chunkZ, int bX, int bZ, int eX, int eZ, int pX, int pY, int pW, int pL) throws Version.VersionException {
 
         Chunk chunk = cm.getChunk(chunkX, chunkZ);
@@ -95,10 +99,10 @@ public class CaveRenderer implements MapRenderer {
                         id = data.getBlockTypeId(x, y, z) & 0xff;
 
                         meta = data.getBlockData(x, y, z) & 0xff;
-                        block = Block.getBlock(id, meta);
+                        block = _blockDB.getBlock(id, meta);
 
                         //try the default meta value: 0
-                        if (block == null) block = Block.getBlock(id, 0);
+                        if (block == null) block = _blockDB.getBlock(id, 0);
 
                         switch (id) {
                             case 0:

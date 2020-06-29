@@ -81,6 +81,8 @@ public class MapFragment extends Fragment {
 
     private TileView tileView;
 
+    private BlockDatabase _blockDB = BlockDatabase.getDatabase();
+
     //procedural markers can be iterated while other threads add things to it;
     // iterating performance is not really affected because of the small size;
     public CopyOnWriteArraySet<AbstractMarker> proceduralMarkers = new CopyOnWriteArraySet<>();
@@ -598,7 +600,7 @@ public class MapFragment extends Fragment {
         }
 
         try {
-            Block.loadBitmaps(activity.getAssets());
+            _blockDB.loadBitmaps(activity.getAssets());
         } catch (IOException e) {
             e.printStackTrace();
         }

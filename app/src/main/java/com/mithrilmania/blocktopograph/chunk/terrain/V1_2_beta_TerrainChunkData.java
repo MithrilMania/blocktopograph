@@ -292,7 +292,7 @@ public class V1_2_beta_TerrainChunkData extends TerrainChunkData {
 
         String name = (String)((CompoundTag)palletEntry).getChildTagByKey("name").getValue();
 
-        Block blk = Block.getByDataName(name);
+        Block blk = _blockDB.getByDataName(name);
         if(blk != null)
             realID = blk.id;
         return (byte)realID;

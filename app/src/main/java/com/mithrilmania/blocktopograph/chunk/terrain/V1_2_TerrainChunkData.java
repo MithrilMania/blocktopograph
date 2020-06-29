@@ -297,7 +297,8 @@ public class V1_2_TerrainChunkData extends TerrainChunkData {
         // the NBT info only has block name; not ID, so we'll have to look it up by name
         String name = (String)((CompoundTag)palletEntry).getChildTagByKey("name").getValue();
 
-        Block blk = Block.getByDataName(name);
+        // still not finding minecraft:green_glazed_terracotta
+        Block blk = _blockDB.getByDataName(name);
 
         if(blk != null)
             realID = blk.id;
@@ -340,8 +341,10 @@ public class V1_2_TerrainChunkData extends TerrainChunkData {
         if (x < chunkW && y < chunkH && z < chunkL && x >= 0 && y >= 0 && z >= 0) {
             int runtimeID = runtimeIDs[getOffset(x, y, z)];
 
+
             Tag palletEntry = pallet.get(runtimeID);
             CompoundTag tg = ((CompoundTag)palletEntry);
+
             if(tg.getChildTagByKey("states") != null) {
                 CompoundTag states = ((CompoundTag)tg.getChildTagByKey("states"));
                 if(states.getChildTagByKey(key) != null)
