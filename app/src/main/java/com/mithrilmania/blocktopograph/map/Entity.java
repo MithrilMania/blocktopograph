@@ -84,7 +84,7 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     ENDER_CRYSTAL(71, "Ender Crystal", new String[]{ "EnderCrystal", "endercrystal", "ender-crystal" }, "ender-crystal", 52),
     //72
     //73
-    TURTLE(74, "Turtle", new String[]{ "Turtle" }, "turtle", 79),
+    //74
     //75
     SHULKER_BULLET(76, "Shulker Bullet", new String[]{ "ShulkerBullet", "shulkerbullet", "shulker-bullet" }, "shulker-bullet", 79),
     FISHING_HOOK(77, "Fishing Hook", new String[]{ "FishingHook", "fishinghook", "fishing-hook" }, "fishing-hook", 57),

@@ -3813,6 +3813,7 @@ public class Block implements NamedBitmapProviderHandle, NamedBitmapProvider {
         this.texPath = texPath;
         this.color = Color.fromARGB(color);
         this.hasBiomeShading = hasBiomeShading;
+        this.identifier = "minecraft:" + subName;
     }
 
     public Block(String name, String subName, int id, int subId, String texPath, int color, boolean hasBiomeShading, String keyTag){
