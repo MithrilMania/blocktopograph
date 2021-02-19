@@ -1,74 +1,33 @@
 package com.mithrilmania.blocktopograph.map.renderer;
 
 
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 
-import android.graphics.Bitmap;
-
+import com.mithrilmania.blocktopograph.WorldData;
+import com.mithrilmania.blocktopograph.block.Block;
 import com.mithrilmania.blocktopograph.chunk.Chunk;
-import com.mithrilmania.blocktopograph.chunk.ChunkManager;
 import com.mithrilmania.blocktopograph.chunk.Version;
-import com.mithrilmania.blocktopograph.chunk.terrain.TerrainChunkData;
-import com.mithrilmania.blocktopograph.map.Block;
-import com.mithrilmania.blocktopograph.map.BlockDatabase;
 import com.mithrilmania.blocktopograph.map.Dimension;
-
 
 
 public class CaveRenderer implements MapRenderer {
 
-    /**
-     * Render a single chunk to provided bitmap (bm)
-     * @param cm ChunkManager, provides chunks, which provide chunk-data
-     * @param bm Bitmap to render to
-     * @param dimension Mapped dimension
-     * @param chunkX X chunk coordinate (x-block coord / Chunk.WIDTH)
-     * @param chunkZ Z chunk coordinate (z-block coord / Chunk.LENGTH)
-     * @param bX begin block X coordinate, relative to chunk edge
-     * @param bZ begin block Z coordinate, relative to chunk edge
-     * @param eX end block X coordinate, relative to chunk edge
-     * @param eZ end block Z coordinate, relative to chunk edge
-     * @param pX texture X pixel coord to start rendering to
-     * @param pY texture Y pixel coord to start rendering to
-     * @param pW width (X) of one block in pixels
-     * @param pL length (Z) of one block in pixels
-     * @return bm is returned back
-     *
-     * @throws Version.VersionException when the version of the chunk is unsupported.
-     */
-
-    private BlockDatabase _blockDB = BlockDatabase.getDatabase();
-
-    public Bitmap renderToBitmap(ChunkManager cm, Bitmap bm, Dimension dimension, int chunkX, int chunkZ, int bX, int bZ, int eX, int eZ, int pX, int pY, int pW, int pL) throws Version.VersionException {
-
-        Chunk chunk = cm.getChunk(chunkX, chunkZ);
-        Version cVersion = chunk.getVersion();
-
-        if(cVersion == Version.ERROR) return MapType.ERROR.renderer.renderToBitmap(cm, bm, dimension, chunkX, chunkZ, bX, bZ, eX, eZ, pX, pY, pW, pL);
-        if(cVersion == Version.NULL) return MapType.CHESS.renderer.renderToBitmap(cm, bm, dimension, chunkX, chunkZ, bX, bZ, eX, eZ, pX, pY, pW, pL);
+    public void renderToBitmap(Chunk chunk, Canvas canvas, Dimension dimension, int chunkX, int chunkZ, int pX, int pY, int pW, int pL, Paint paint, WorldData worldData) throws Version.VersionException {
 
         boolean solid, intoSurface;
-        int id, meta, cavyness, layers, offset;
-        Block block;
-        int x, y, z, subChunk, color, i, j, tX, tY, r, g, b;
+        int cavyness, layers;
 
-        //the bottom sub-chunk is sufficient to get heightmap data.
-        TerrainChunkData floorData = chunk.getTerrain((byte) 0);
-        if(floorData == null || !floorData.load2DData()) return MapType.CHESS.renderer.renderToBitmap(cm, bm, dimension, chunkX, chunkZ, bX, bZ, eX, eZ, pX, pY, pW, pL);
-
-        TerrainChunkData data;
-
-        for (z = bZ, tY = pY; z < eZ; z++, tY += pL) {
-            for (x = bX, tX = pX; x < eX; x++, tX += pW) {
+        for (int z = 0, tY = pY; z < 16; z++, tY += pL) {
+            for (int x = 0, tX = pX; x < 16; x++, tX += pW) {
 
 
                 solid = false;
                 intoSurface = false;
                 cavyness = 0;
                 layers = 0;
-                y = floorData.getHeightMapValue(x, z);
-                offset = y % cVersion.subChunkHeight;
-                subChunk = y / cVersion.subChunkHeight;
-
                 /*
                 while (cavefloor > 0) {
                     caveceil = chunk.getCaveYUnderAt(x, z, cavefloor - 1);
@@ -82,80 +41,73 @@ public class CaveRenderer implements MapRenderer {
                 */
 
 
-                r = g = b = 0;
+                int r = 0, g = 0, b = 0;
 
-                subChunkLoop: for(; subChunk >= 0; subChunk--) {
+                subChunkLoop:
+                for (int y = chunk.getHeightMapValue(x, z); y >= 0; y--) {
 
-                    data = chunk.getTerrain((byte) subChunk);
-                    if (data == null || !data.loadTerrain()){
-                        //start at the top of the next chunk! (current offset might differ)
-                        offset = cVersion.subChunkHeight - 1;
-                        continue;
+                    Block block = chunk.getBlock(x, y, z, 0);
+
+                    switch (block.getLegacyBlock()) {
+                        case B_0_0_AIR:
+                            //count the number of times it goes from solid to air
+                            if (solid) layers++;
+
+                            //count the air blocks underground,
+                            // but avoid trees by skipping the first layer
+                            if (intoSurface) cavyness++;
+                            break;
+                        case B_66_0_RAIL://rail
+                            if (b < 150) {
+                                b = 150;
+                                r = g = 50;
+                            }
+                            break;
+                        case B_5_0_PLANKS_OAK://wooden plank
+                        case B_5_1_PLANKS_SPRUCE:
+                        case B_5_2_PLANKS_BIRCH:
+                        case B_5_3_PLANKS_JUNGLE:
+                        case B_5_4_PLANKS_ACACIA:
+                        case B_5_5_PLANKS_BIG_OAK:
+                            if (b < 100) {
+                                b = 100;
+                                r = g = 100;
+                            }
+                            break;
+                        case B_52_0_MOB_SPAWNER://monster spawner
+                            r = g = b = 255;
+                            break subChunkLoop;
+                        case B_54_0_CHEST://chest
+                            if (b < 170) {
+                                b = 170;
+                                r = 240;
+                                g = 40;
+                            }
+                            break;
+                        case B_98_0_STONEBRICK_DEFAULT://stone bricks
+                        case B_98_1_STONEBRICK_MOSSY:
+                        case B_98_2_STONEBRICK_CRACKED:
+                        case B_98_3_STONEBRICK_CHISELED:
+                        case B_98_4_STONEBRICK_SMOOTH:
+                            if (b < 145) {
+                                b = 145;
+                                r = g = 120;
+                            }
+                            break;
+                        case B_48_0_MOSSY_COBBLESTONE://moss cobblestone
+                        case B_4_0_COBBLESTONE://cobblestone
+                            if (b < 140) {
+                                b = 140;
+                                r = g = 100;
+                            }
+                            break;
                     }
-
-
-                    for (y = offset; y >= 0; y--) {
-
-                        id = data.getBlockTypeId(x, y, z) & 0xff;
-
-                        meta = data.getBlockData(x, y, z) & 0xff;
-                        block = _blockDB.getBlock(id, meta);
-
-                        //try the default meta value: 0
-                        if (block == null) block = _blockDB.getBlock(id, 0);
-
-                        switch (id) {
-                            case 0:
-                                //count the number of times it goes from solid to air
-                                if(solid) layers++;
-
-                                //count the air blocks underground,
-                                // but avoid trees by skipping the first layer
-                                if(intoSurface) cavyness++;
-                                break;
-                            case 66://rail
-                                if (b < 150) {
-                                    b = 150;
-                                    r = g = 50;
-                                }
-                                break;
-                            case 5://wooden plank
-                                if (b < 100) {
-                                    b = 100;
-                                    r = g = 100;
-                                }
-                                break;
-                            case 52://monster spawner
-                                r = g = b = 255;
-                                break subChunkLoop;
-                            case 54://chest
-                                if (b < 170) {
-                                    b = 170;
-                                    r = 240;
-                                    g = 40;
-                                }
-                                break;
-                            case 98://stone bricks
-                                if (b < 145) {
-                                    b = 145;
-                                    r = g = 120;
-                                }
-                                break;
-                            case 48://moss cobblestone
-                            case 4://cobblestone
-                                if (b < 140) {
-                                    b = 140;
-                                    r = g = 100;
-                                }
-                                break;
-                        }
-                        r += data.getBlockLightValue(x, y, z);
-                        solid = block != null && block.color.alpha == 0xff;
-                        intoSurface |= solid && (y < 60 || layers > 0);
-                    }
+                    r += chunk.getBlockLightValue(x, y, z);
+                    solid = Color.alpha(block.getColor()) == 0xff;
+                    intoSurface |= solid && (y < 60 || layers > 0);
                 }
 
-                if (g == 0 && layers > 0){
+                if (g == 0 && layers > 0) {
                     g = (r + 2) * cavyness;
                     r *= 32 * layers;
                     b = 16 * cavyness * (layers - 1);
@@ -167,19 +119,13 @@ public class CaveRenderer implements MapRenderer {
                 //b = b < 0 ? 0 : b > 255 ? 255 : b;
 
 
-                color = (r << 16) | (g << 8) | b | 0xff000000;
+                int color = (r << 16) | (g << 8) | b | 0xff000000;
 
-
-                for (i = 0; i < pL; i++) {
-                    for (j = 0; j < pW; j++) {
-                        bm.setPixel(tX + j, tY + i, color);
-                    }
-                }
+                paint.setColor(color);
+                canvas.drawRect(new Rect(tX, tY, tX + pW, tY + pL), paint);
 
             }
         }
-
-        return bm;
     }
 
 }

@@ -4,7 +4,6 @@ import com.mithrilmania.blocktopograph.WorldData;
 import com.mithrilmania.blocktopograph.chunk.Chunk;
 import com.mithrilmania.blocktopograph.chunk.ChunkTag;
 import com.mithrilmania.blocktopograph.map.Biome;
-import com.mithrilmania.blocktopograph.util.Noise;
 
 import java.nio.ByteBuffer;
 
@@ -31,44 +30,46 @@ public class V1_1_TerrainChunkData extends TerrainChunkData {
 
     public V1_1_TerrainChunkData(Chunk chunk, byte subChunk) {
         super(chunk, subChunk);
+        mNotFailed = loadTerrain();
     }
 
     @Override
     public void write() throws WorldData.WorldDBException {
-        this.chunk.worldData.writeChunkData(chunk.x, chunk.z, ChunkTag.TERRAIN, chunk.dimension, subChunk, true, terrainData.array());
-        this.chunk.worldData.writeChunkData(chunk.x, chunk.z, ChunkTag.DATA_2D, chunk.dimension, subChunk, true, data2D.array());
+        Chunk chunk = this.chunk.get();
+        chunk.getWorldData().writeChunkData(chunk.mChunkX, chunk.mChunkZ, ChunkTag.TERRAIN, chunk.mDimension, subChunk, true, terrainData.array());
+        chunk.getWorldData().writeChunkData(chunk.mChunkX, chunk.mChunkZ, ChunkTag.DATA_2D, chunk.mDimension, subChunk, true, data2D.array());
     }
 
     @Override
     public boolean loadTerrain() {
-        if(terrainData == null){
+        if (terrainData == null) {
             try {
-                byte[] rawData = this.chunk.worldData.getChunkData(chunk.x, chunk.z, ChunkTag.TERRAIN, chunk.dimension, subChunk, true);
-                if(rawData == null) return false;
+                Chunk chunk = this.chunk.get();
+                byte[] rawData = chunk.getWorldData().getChunkData(chunk.mChunkX, chunk.mChunkZ, ChunkTag.TERRAIN, chunk.mDimension, subChunk, true);
+                if (rawData == null) return false;
                 this.terrainData = ByteBuffer.wrap(rawData);
                 return true;
-            } catch (Exception e){
+            } catch (Exception e) {
                 //data is not present
                 return false;
             }
-        }
-        else return true;
+        } else return mNotFailed;
     }
 
     @Override
     public boolean load2DData() {
-        if(data2D == null){
+        if (data2D == null) {
             try {
-                byte[] rawData = this.chunk.worldData.getChunkData(chunk.x, chunk.z, ChunkTag.DATA_2D, chunk.dimension, subChunk, false);
-                if(rawData == null) return false;
+                Chunk chunk = this.chunk.get();
+                byte[] rawData = chunk.getWorldData().getChunkData(chunk.mChunkX, chunk.mChunkZ, ChunkTag.DATA_2D, chunk.mDimension, subChunk, false);
+                if (rawData == null) return false;
                 this.data2D = ByteBuffer.wrap(rawData);
                 return true;
-            } catch (Exception e){
+            } catch (Exception e) {
                 //data is not present
                 return false;
             }
-        }
-        else return true;
+        } else return true;
     }
 
 
@@ -85,9 +86,9 @@ public class V1_1_TerrainChunkData extends TerrainChunkData {
         byte sandstone = (byte) 24;
 
         //generate super basic terrain (one layer of bedrock, 31 layers of sandstone)
-        for(x = 0; x < chunkW; x++){
-            for(z = 0; z < chunkL; z++){
-                for(y = 0, realY = chunkH * this.subChunk; y < chunkH; y++, i++, realY++){
+        for (x = 0; x < chunkW; x++) {
+            for (z = 0; z < chunkL; z++) {
+                for (y = 0, realY = chunkH * this.subChunk; y < chunkH; y++, i++, realY++) {
                     terrain[i] = (realY == 0 ? bedrock : (realY < 32 ? sandstone : 0));
                 }
             }
@@ -95,12 +96,12 @@ public class V1_1_TerrainChunkData extends TerrainChunkData {
 
 
         //fill meta-data with 0
-        for(; i < POS_META_DATA; i++){
+        for (; i < POS_META_DATA; i++) {
             terrain[i] = (byte) 0;
         }
 
         //fill block-light with 0xff
-        for(; i < TERRAIN_LENGTH; i++){
+        for (; i < TERRAIN_LENGTH; i++) {
             terrain[i] = (byte) 0xff;
         }
 
@@ -108,18 +109,18 @@ public class V1_1_TerrainChunkData extends TerrainChunkData {
         i = 0;
 
 
-        if(this.subChunk == (byte) 0){
+        if (this.subChunk == (byte) 0) {
 
             byte[] data2d = new byte[DATA2D_LENGTH];
 
             //fill heightmap
-            for(; i < POS_BIOME_DATA;){
+            for (; i < POS_BIOME_DATA; ) {
                 data2d[i++] = 0;
                 data2d[i++] = 32;
             }
 
             //fill biome data
-            for(; i < DATA2D_LENGTH;){
+            for (; i < DATA2D_LENGTH; ) {
                 data2d[i++] = 1;//biome: plains
                 data2d[i++] = (byte) 42;//r
                 data2d[i++] = (byte) 42;//g
@@ -152,8 +153,7 @@ public class V1_1_TerrainChunkData extends TerrainChunkData {
             //dualData = terrainData.get(POS_META_DATA + (offset >>> 1));
             dualData = terrainData.get(terrainData.limit() - (offset >>> 1));
             return (byte) ((offset & 1) == 1 ? ((dualData >>> 4) & 0xf) : (dualData & 0xf));
-        }
-        catch (Exception e) {
+        } catch (Exception e) {
             return (byte) ((offset & 1) == 1 ? ((dualData >>> 4) & 0xf) : (dualData & 0xf));
         }
 
@@ -216,21 +216,6 @@ public class V1_1_TerrainChunkData extends TerrainChunkData {
     @Override
     public byte getBiome(int x, int z) {
         return data2D.get(POS_BIOME_DATA + get2Di(x, z));
-    }
-
-    private int getNoise(int base, int x, int z){
-        // noise values are between -1 and 1
-        // 0.0001 is added to the coordinates because integer values result in 0
-        double oct1 = Noise.noise(
-                ((double) (this.chunk.x * chunkW + x) / 100.0) + 0.0001,
-                ((double) (this.chunk.z * chunkL + z) / 100.0) + 0.0001);
-        double oct2 = Noise.noise(
-                ((double) (this.chunk.x * chunkW + x) / 20.0) + 0.0001,
-                ((double) (this.chunk.z * chunkL + z) / 20.0) + 0.0001);
-        double oct3 = Noise.noise(
-                ((double) (this.chunk.x * chunkW + x) / 3.0) + 0.0001,
-                ((double) (this.chunk.z * chunkL + z) / 3.0) + 0.0001);
-        return (int) (base + 60 + (40 * oct1) + (14 * oct2) + (6 * oct3));
     }
 
     /*

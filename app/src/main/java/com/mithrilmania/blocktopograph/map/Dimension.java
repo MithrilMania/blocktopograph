@@ -1,6 +1,9 @@
 package com.mithrilmania.blocktopograph.map;
 
 
+import androidx.annotation.StringRes;
+
+import com.mithrilmania.blocktopograph.R;
 import com.mithrilmania.blocktopograph.map.renderer.MapType;
 
 import java.util.HashMap;
@@ -18,7 +21,7 @@ public enum Dimension {
     public final String dataName, name;
     public final MapType defaultMapType;
 
-    Dimension(int id, String dataName, String name, int chunkW, int chunkL, int chunkH, int dimensionScale, MapType defaultMapType){
+    Dimension(int id, String dataName, String name, int chunkW, int chunkL, int chunkH, int dimensionScale, MapType defaultMapType) {
         this.id = id;
         this.dataName = dataName;
         this.name = name;
@@ -29,22 +32,37 @@ public enum Dimension {
         this.defaultMapType = defaultMapType;
     }
 
+    @StringRes
+
+    public int getName() {
+        switch (this) {
+            case OVERWORLD:
+                return R.string.overworld;
+            case NETHER:
+                return R.string.nether;
+            case END:
+                return R.string.the_end;
+            default:
+                return 0;
+        }
+    }
+
     private static Map<String, Dimension> dimensionMap = new HashMap<>();
 
     static {
-        for(Dimension dimension : Dimension.values()){
+        for (Dimension dimension : Dimension.values()) {
             dimensionMap.put(dimension.dataName, dimension);
         }
     }
 
-    public static Dimension getDimension(String dataName){
-        if(dataName == null) return null;
+    public static Dimension getDimension(String dataName) {
+        if (dataName == null) return null;
         return dimensionMap.get(dataName.toLowerCase());
     }
 
-    public static Dimension getDimension(int id){
-        for(Dimension dimension : values()){
-            if(dimension.id == id) return dimension;
+    public static Dimension getDimension(int id) {
+        for (Dimension dimension : values()) {
+            if (dimension.id == id) return dimension;
         }
         return null;
     }

@@ -1,149 +1,176 @@
 package com.mithrilmania.blocktopograph.chunk;
 
+import androidx.annotation.NonNull;
+
+import com.mithrilmania.blocktopograph.Log;
 import com.mithrilmania.blocktopograph.WorldData;
-import com.mithrilmania.blocktopograph.chunk.terrain.TerrainChunkData;
+import com.mithrilmania.blocktopograph.block.Block;
+import com.mithrilmania.blocktopograph.block.KnownBlockRepr;
 import com.mithrilmania.blocktopograph.map.Dimension;
 
-import java.util.concurrent.atomic.AtomicReferenceArray;
+import java.io.IOException;
+import java.lang.ref.WeakReference;
 
+public abstract class Chunk {
 
-public class Chunk {
+    protected final WeakReference<WorldData> mWorldData;
+    protected final Version mVersion;
+    public final int mChunkX;
+    public final int mChunkZ;
+    public final Dimension mDimension;
+    protected NBTChunkData mEntity;
+    protected NBTChunkData mTileEntity;
+    boolean mIsVoid;
+    boolean mIsError;
 
-    public final WorldData worldData;
-
-    public final int x, z;
-    public final Dimension dimension;
-
-    private Version version;
-
-    private AtomicReferenceArray<TerrainChunkData>
-            terrain = new AtomicReferenceArray<>(256);
-
-    private AtomicReferenceArray<Version>
-            versions = new AtomicReferenceArray<>(256);
-
-    private volatile NBTChunkData entity, blockEntity;
-
-    public Chunk(WorldData worldData, int x, int z, Dimension dimension) {
-        this.worldData = worldData;
-        this.x = x;
-        this.z = z;
-        this.dimension = dimension;
-    }
-
-    public TerrainChunkData getTerrain(byte subChunk) throws Version.VersionException {
-        TerrainChunkData data = terrain.get(subChunk & 0xff);
-        if(data == null){
-            data = this.getVersion(subChunk).createTerrainChunkData(this, subChunk);
-            terrain.set(subChunk & 0xff, data);
-        }
-        return data;
-    }
-
-    public NBTChunkData getEntity() throws Version.VersionException {
-        if(entity == null) entity = this.getVersion().createEntityChunkData(this);
-        return entity;
-    }
-
-
-    public NBTChunkData getBlockEntity() throws Version.VersionException {
-        if(blockEntity == null) blockEntity = this.getVersion().createBlockEntityChunkData(this);
-        return blockEntity;
-    }
-
-    public Version getVersion(){
-        return this.getVersion((byte)0);
-    }
-
-    public Version getVersion(byte subChunk){
-        Version vers = null;
-        byte[] rawData = null;
-        byte versionNo;
+    Chunk(WorldData worldData, Version version, int chunkX, int chunkZ, Dimension dimension) {
+        mWorldData = new WeakReference<>(worldData);
+        mVersion = version;
+        mChunkX = chunkX;
+        mChunkZ = chunkZ;
+        mDimension = dimension;
+        mIsVoid = false;
+        mIsError = false;
         try {
-            vers = versions.get(subChunk);
-            if(vers == null) {
-                byte[] data = this.worldData.getChunkData(x, z, ChunkTag.VERSION, dimension, subChunk, false);
+            mEntity = version.createEntityChunkData(this);
+            mTileEntity = version.createBlockEntityChunkData(this);
+        } catch (Version.VersionException e) {
+            Log.d(this, e);
+        }
+    }
 
-                if(data == null || data.length <= 0)
-                    vers = Version.NULL;
-                else {
-                    versionNo = data[0];
-                    rawData = worldData.getChunkData(x, z, ChunkTag.TERRAIN, dimension, subChunk, true);
-
-                    // for some reason, the above read doesn't always work; in particular, for some newer newer chunks
-                    // in that case, continue relying on the NBT data
-                    if (rawData != null) {
-                        versionNo = rawData[0];
-                    }
-
-                    vers = Version.getVersion(versionNo);
+    public static Chunk createEmpty(@NonNull WorldData worldData, int chunkX, int chunkZ, Dimension dimension,
+                                    Version createOfVersion) {
+        Chunk chunk;
+        switch (createOfVersion) {
+            case V1_2_PLUS:
+                try {
+                    worldData.writeChunkData(chunkX, chunkZ, ChunkTag.GENERATOR_STAGE, dimension, (byte) 0, false, new byte[]{2, 0, 0, 0});
+                    worldData.writeChunkData(chunkX, chunkZ, ChunkTag.VERSION, dimension, (byte) 0, false, new byte[]{0xf});
+                    chunk = new BedrockChunk(worldData, createOfVersion, chunkX, chunkZ, dimension, true);
+                } catch (Exception e) {
+                    Log.d(Chunk.class, e);
+                    chunk = new VoidChunk(worldData, createOfVersion, chunkX, chunkZ, dimension);
                 }
-                versions.set(subChunk, vers);
-            }
+                break;
+            default:
+                chunk = new VoidChunk(worldData, createOfVersion, chunkX, chunkZ, dimension);
+        }
+        return chunk;
+    }
+
+    public static Chunk create(@NonNull WorldData worldData, int chunkX, int chunkZ, Dimension dimension,
+                               boolean createIfMissing, Version createOfVersion) {
+        Version version;
+        try {
+            byte[] data = worldData.getChunkData(chunkX, chunkZ, ChunkTag.VERSION, dimension, (byte) 0, false);
+            if (data == null && createIfMissing)
+                return createEmpty(worldData, chunkX, chunkZ, dimension, createOfVersion);
+            version = Version.getVersion(data);
         } catch (WorldData.WorldDBLoadException | WorldData.WorldDBException e) {
-            e.printStackTrace();
-            vers = Version.ERROR;
+            Log.d(Chunk.class, e);
+            version = Version.ERROR;
         }
-
-        return vers;
+        Chunk chunk;
+        switch (version) {
+            case ERROR:
+            case OLD_LIMITED:
+                chunk = new VoidChunk(worldData, version, chunkX, chunkZ, dimension);
+                chunk.mIsError = true;
+                break;
+            case v0_9:
+                chunk = new PocketChunk(worldData, version, chunkX, chunkZ, dimension);
+                break;
+            case V1_0:
+            case V1_1:
+            case V1_2_PLUS:
+                chunk = new BedrockChunk(worldData, version, chunkX, chunkZ, dimension, false);
+                break;
+            case NULL:
+            default:
+                chunk = new VoidChunk(worldData, version, chunkX, chunkZ, dimension);
+        }
+        return chunk;
     }
 
-    //TODO: should we use the heightmap???
-    public int getHighestBlockYAt(int x, int z) throws Version.VersionException {
-        Version cVersion = getVersion();
-        TerrainChunkData data;
-        for(int subChunk = cVersion.subChunks - 1; subChunk >= 0; subChunk--) {
-            data = this.getTerrain((byte) subChunk);
-            if (data == null || !data.loadTerrain()) continue;
-
-            for (int y = cVersion.subChunkHeight; y >= 0; y--) {
-                if (data.getBlockTypeId(x & 15, y, z & 15) != 0)
-                    return (subChunk * cVersion.subChunkHeight) + y;
-            }
-        }
-        return -1;
-    }
-
-    public int getHighestBlockYUnderAt(int x, int z, int y) throws Version.VersionException {
-        Version cVersion = getVersion();
-        int offset = y % cVersion.subChunkHeight;
-        int subChunk = y / cVersion.subChunkHeight;
-        TerrainChunkData data;
-
-        for(; subChunk >= 0; subChunk--) {
-            data = this.getTerrain((byte) subChunk);
-            if (data == null || !data.loadTerrain()) continue;
-
-            for (y = offset; y >= 0; y--) {
-                if (data.getBlockTypeId(x & 15, y, z & 15) != 0)
-                    return (subChunk * cVersion.subChunkHeight) + y;
-            }
-
-            //start at the top of the next chunk! (current offset might differ)
-            offset = cVersion.subChunkHeight - 1;
-        }
-        return -1;
-    }
-
-    public int getCaveYUnderAt(int x, int z, int y) throws Version.VersionException {
-        Version cVersion = getVersion();
-        int offset = y % cVersion.subChunkHeight;
-        int subChunk = y / cVersion.subChunkHeight;
-        TerrainChunkData data;
-
-        for(; subChunk >= 0; subChunk--) {
-            data = this.getTerrain((byte) subChunk);
-            if (data == null || !data.loadTerrain()) continue;
-            for (y = offset; y >= 0; y--) {
-                if (data.getBlockTypeId(x & 15, y, z & 15) == 0)
-                    return (subChunk * cVersion.subChunkHeight) + y;
-            }
-
-            //start at the top of the next chunk! (current offset might differ)
-            offset = cVersion.subChunkHeight - 1;
-        }
-        return -1;
+    public final WorldData getWorldData() {
+        return mWorldData.get();
     }
 
 
+    public final boolean isVoid() {
+        return mIsVoid;
+    }
+
+
+    public final boolean isError() {
+        return mIsError;
+    }
+
+    abstract public boolean supportsBlockLightValues();
+
+    abstract public boolean supportsHeightMap();
+
+    abstract public int getHeightLimit();
+
+    abstract public int getHeightMapValue(int x, int z);
+
+    abstract public int getBiome(int x, int z);
+
+    abstract public void setBiome(int x, int z, int id);
+
+    abstract public int getGrassColor(int x, int z);
+
+    @NonNull
+    abstract public Block getBlock(int x, int y, int z);
+
+    @NonNull
+    abstract public Block getBlock(int x, int y, int z, int layer);
+
+    abstract public void setBlock(int x, int y, int z, int layer, @NonNull Block block);
+
+    abstract public int getBlockLightValue(int x, int y, int z);
+
+    abstract public int getSkyLightValue(int x, int y, int z);
+
+    abstract public int getHighestBlockYUnderAt(int x, int z, int y);
+
+    abstract public int getCaveYUnderAt(int x, int z, int y);
+
+    abstract public void save() throws WorldData.WorldDBException, IOException;
+
+    @NonNull
+    protected Block getAir() {
+        return mWorldData.get().mBlockRegistry.createBlock(KnownBlockRepr.B_0_0_AIR);
+    }
+
+    public void deleteThis() throws Exception {
+        WorldData worldData = mWorldData.get();
+        if (worldData == null) throw new RuntimeException("World data is null.");
+        worldData.removeChunkData(mChunkX, mChunkZ, ChunkTag.VERSION, mDimension, (byte) 0, false);
+        worldData.removeChunkData(mChunkX, mChunkZ, ChunkTag.DATA_2D, mDimension, (byte) 0, false);
+        worldData.removeChunkData(mChunkX, mChunkZ, ChunkTag.DATA_2D_LEGACY, mDimension, (byte) 0, false);
+        worldData.removeChunkData(mChunkX, mChunkZ, ChunkTag.PENDING_TICKS, mDimension, (byte) 0, false);
+        worldData.removeChunkData(mChunkX, mChunkZ, ChunkTag.GENERATOR_STAGE, mDimension, (byte) 0, false);
+        worldData.removeChunkData(mChunkX, mChunkZ, ChunkTag.BIOME_STATE, mDimension, (byte) 0, false);
+        worldData.removeChunkData(mChunkX, mChunkZ, ChunkTag.ENTITY, mDimension, (byte) 0, false);
+        worldData.removeChunkData(mChunkX, mChunkZ, ChunkTag.BLOCK_ENTITY, mDimension, (byte) 0, false);
+        worldData.removeChunkData(mChunkX, mChunkZ, ChunkTag.BLOCK_EXTRA_DATA, mDimension, (byte) 0, false);
+        worldData.removeChunkData(mChunkX, mChunkZ, ChunkTag.V0_9_LEGACY_TERRAIN, mDimension, (byte) 0, false);
+        for (byte i = 0; i < 16; i++) {
+            worldData.removeChunkData(mChunkX, mChunkZ, ChunkTag.TERRAIN, mDimension, i, true);
+        }
+        // Prevent saving.
+        mIsError = true;
+    }
+
+
+    public final NBTChunkData getEntity() {
+        return mEntity;
+    }
+
+
+    public final NBTChunkData getBlockEntity() {
+        return mTileEntity;
+    }
 }

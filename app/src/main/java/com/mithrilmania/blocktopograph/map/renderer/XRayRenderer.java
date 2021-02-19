@@ -1,13 +1,14 @@
 package com.mithrilmania.blocktopograph.map.renderer;
 
-import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 
+import com.mithrilmania.blocktopograph.WorldData;
+import com.mithrilmania.blocktopograph.block.KnownBlockRepr;
 import com.mithrilmania.blocktopograph.chunk.Chunk;
-import com.mithrilmania.blocktopograph.chunk.ChunkManager;
 import com.mithrilmania.blocktopograph.chunk.Version;
-import com.mithrilmania.blocktopograph.chunk.terrain.TerrainChunkData;
-import com.mithrilmania.blocktopograph.map.Block;
-import com.mithrilmania.blocktopograph.map.BlockDatabase;
 import com.mithrilmania.blocktopograph.map.Dimension;
 
 
@@ -17,100 +18,69 @@ public class XRayRenderer implements MapRenderer {
     TODO make the X-ray viewable blocks configurable, without affecting performance too much...
      */
 
-    /**
-     * Render a single chunk to provided bitmap (bm)
-     * @param cm ChunkManager, provides chunks, which provide chunk-data
-     * @param bm Bitmap to render to
-     * @param dimension Mapped dimension
-     * @param chunkX X chunk coordinate (x-block coord / Chunk.WIDTH)
-     * @param chunkZ Z chunk coordinate (z-block coord / Chunk.LENGTH)
-     * @param bX begin block X coordinate, relative to chunk edge
-     * @param bZ begin block Z coordinate, relative to chunk edge
-     * @param eX end block X coordinate, relative to chunk edge
-     * @param eZ end block Z coordinate, relative to chunk edge
-     * @param pX texture X pixel coord to start rendering to
-     * @param pY texture Y pixel coord to start rendering to
-     * @param pW width (X) of one block in pixels
-     * @param pL length (Z) of one block in pixels
-     * @return bm is returned back
-     *
-     * @throws Version.VersionException when the version of the chunk is unsupported.
-     */
-    private BlockDatabase _blockDB = BlockDatabase.getDatabase();
-    public Bitmap renderToBitmap(ChunkManager cm, Bitmap bm, Dimension dimension, int chunkX, int chunkZ, int bX, int bZ, int eX, int eZ, int pX, int pY, int pW, int pL) throws Version.VersionException {
-
-        Chunk chunk = cm.getChunk(chunkX, chunkZ);
-        Version cVersion = chunk.getVersion();
-
-        if(cVersion == Version.ERROR) return MapType.ERROR.renderer.renderToBitmap(cm, bm, dimension, chunkX, chunkZ, bX, bZ, eX, eZ, pX, pY, pW, pL);
-        if(cVersion == Version.NULL) return MapType.CHESS.renderer.renderToBitmap(cm, bm, dimension, chunkX, chunkZ, bX, bZ, eX, eZ, pX, pY, pW, pL);
-
-        //the bottom sub-chunk is sufficient to get heightmap data.
-        TerrainChunkData data;
-
-        int x, y, z, color, i, j, tX, tY;
+    public void renderToBitmap(Chunk chunk, Canvas canvas, Dimension dimension, int chunkX, int chunkZ, int pX, int pY, int pW, int pL, Paint paint, WorldData worldData) throws Version.VersionException {
 
         //render width in blocks
-        int rW = eX - bX;
-        int size2D = rW * (eZ - bZ);
+        int rW = 16;
+        int size2D = rW * (16);
         int index2D;
-        Block[] bestBlock = new Block[size2D];
+        KnownBlockRepr[] bestBlock = new KnownBlockRepr[size2D];
 
         int[] minValue = new int[size2D];
         int bValue;
-        Block block;
+        KnownBlockRepr block;
 
         int average;
-        int r, g, b;
 
-        int subChunk;
-        for(subChunk = 0; subChunk < cVersion.subChunks; subChunk++) {
-            data = chunk.getTerrain((byte) subChunk);
-            if (data == null || !data.loadTerrain()) break;
+        for (int z = 0; z < 16; z++) {
+            for (int x = 0; x < 16; x++) {
 
-            for (z = bZ; z < eZ; z++) {
-                for (x = bX; x < eX; x++) {
+                for (int y = 0; y < chunk.getHeightLimit(); y++) {
+                    block = chunk.getBlock(x, y, z, 0).getLegacyBlock();
 
-                    for (y = 0; y < cVersion.subChunkHeight; y++) {
-                        block = _blockDB.getBlock(data.getBlockTypeId(x, y, z) & 0xff, 0);
+                    index2D = (z * rW) + x;
+                    if (block.id <= 1)
+                        continue;
+                    else if (block == KnownBlockRepr.B_56_0_DIAMOND_ORE) {
+                        bestBlock[index2D] = block;
+                        break;
+                    } else if (block == KnownBlockRepr.B_129_0_EMERALD_ORE) bValue = 8;
+                    else if (block == KnownBlockRepr.B_153_0_QUARTZ_ORE) bValue = 7;
+                    else if (block == KnownBlockRepr.B_14_0_GOLD_ORE) bValue = 6;
+                    else if (block == KnownBlockRepr.B_15_0_IRON_ORE) bValue = 5;
+                    else if (block == KnownBlockRepr.B_73_0_REDSTONE_ORE) bValue = 4;
+                    else if (block == KnownBlockRepr.B_21_0_LAPIS_ORE) bValue = 3;
+                        //else if(block == KnownBlockRepr.COAL_ORE) bValue = 2;
+                        //else if(b == KnownBlockRepr.LAVA || b == KnownBlockRepr.STATIONARY_LAVA) bValue = 1;
+                    else bValue = 0;
 
-                        index2D = ((z - bZ) * rW) + (x - bX);
-                        if (block == null || block.id <= 1)
-                            continue;
-                        else if (block == _blockDB.B_56_0_DIAMOND_ORE()) {
-                            bestBlock[index2D] = block;
-                            break;
-                        } else if (block == _blockDB.B_129_0_EMERALD_ORE()) bValue = 8;
-                        else if (block == _blockDB.B_153_0_QUARTZ_ORE()) bValue = 7;
-                        else if (block == _blockDB.B_14_0_GOLD_ORE()) bValue = 6;
-                        else if (block == _blockDB.B_15_0_IRON_ORE()) bValue = 5;
-                        else if (block == _blockDB.B_73_0_REDSTONE_ORE()) bValue = 4;
-                        else if (block == _blockDB.B_21_0_LAPIS_ORE()) bValue = 3;
-                            //else if(block == Block.COAL_ORE) bValue = 2;
-                            //else if(b == Block.LAVA || b == Block.STATIONARY_LAVA) bValue = 1;
-                        else bValue = 0;
-
-                        if (bValue > minValue[index2D]) {
-                            minValue[index2D] = bValue;
-                            bestBlock[index2D] = block;
-                        }
+                    if (bValue > minValue[index2D]) {
+                        minValue[index2D] = bValue;
+                        bestBlock[index2D] = block;
                     }
                 }
             }
         }
 
-        if(subChunk == 0) return MapType.CHESS.renderer.renderToBitmap(cm, bm, dimension, chunkX, chunkZ, bX, bZ, eX, eZ, pX, pY, pW, pL);
 
-        for (z = bZ, tY = pY; z < eZ; z++, tY += pL) {
-            for (x = bX, tX = pX; x < eX; x++, tX += pW) {
-                block = bestBlock[((z - bZ) * rW) + (x - bX)];
-                if (block == null || block.color == null) {
+//        if (y == 0) {
+//            MapType.CHESS.renderer.renderToBitmap(chunk, canvas, dimension, chunkX, chunkZ, pX, pY, pW, pL, paint, version, chunkManager);
+//            return;
+//        }
+
+        for (int z = 0, tY = pY; z < 16; z++, tY += pL) {
+            for (int x = 0, tX = pX; x < 16; x++, tX += pW) {
+                block = bestBlock[(z * rW) + x];
+                int color;
+                if (block == null) {
                     color = 0xff000000;
                 } else {
 
-                    r = block.color.red;
-                    g = block.color.green;
-                    b = block.color.blue;
+                    color = block.color;
+
+                    int r = Color.red(color);
+                    int g = Color.green(color);
+                    int b = Color.blue(color);
                     average = (r + g + b) / 3;
 
                     //make the color better recognizable
@@ -127,19 +97,12 @@ public class XRayRenderer implements MapRenderer {
 
                     color = (r << 16) | (g << 8) | (b) | 0xff000000;
                 }
-
-
-                for (i = 0; i < pL; i++) {
-                    for (j = 0; j < pW; j++) {
-                        bm.setPixel(tX + j, tY + i, color);
-                    }
-                }
+                paint.setColor(color);
+                canvas.drawRect(new Rect(tX, tY, tX + pW, tY + pL), paint);
 
 
             }
         }
-
-        return bm;
     }
 
 }

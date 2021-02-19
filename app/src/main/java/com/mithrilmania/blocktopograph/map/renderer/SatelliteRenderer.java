@@ -1,203 +1,75 @@
 package com.mithrilmania.blocktopograph.map.renderer;
 
-import android.graphics.Bitmap;
-import com.mithrilmania.blocktopograph.Log;
+import android.graphics.Canvas;
+import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.Rect;
 
+import androidx.annotation.NonNull;
+
+import com.mithrilmania.blocktopograph.WorldData;
+import com.mithrilmania.blocktopograph.block.Block;
+import com.mithrilmania.blocktopograph.block.KnownBlockRepr;
 import com.mithrilmania.blocktopograph.chunk.Chunk;
-import com.mithrilmania.blocktopograph.chunk.ChunkManager;
 import com.mithrilmania.blocktopograph.chunk.Version;
-import com.mithrilmania.blocktopograph.chunk.terrain.TerrainChunkData;
-import com.mithrilmania.blocktopograph.map.Block;
-import com.mithrilmania.blocktopograph.map.BlockDatabase;
 import com.mithrilmania.blocktopograph.map.Dimension;
 
 
 public class SatelliteRenderer implements MapRenderer {
 
-    /**
-     * Render a single chunk to provided bitmap (bm)
-     * @param cm ChunkManager, provides chunks, which provide chunk-data
-     * @param bm Bitmap to render to
-     * @param dimension Mapped dimension
-     * @param chunkX X chunk coordinate (x-block coord / Chunk.WIDTH)
-     * @param chunkZ Z chunk coordinate (z-block coord / Chunk.LENGTH)
-     * @param bX begin block X coordinate, relative to chunk edge
-     * @param bZ begin block Z coordinate, relative to chunk edge
-     * @param eX end block X coordinate, relative to chunk edge
-     * @param eZ end block Z coordinate, relative to chunk edge
-     * @param pX texture X pixel coord to start rendering to
-     * @param pY texture Y pixel coord to start rendering to
-     * @param pW width (X) of one block in pixels
-     * @param pL length (Z) of one block in pixels
-     * @return bm is returned back
-     *
-     * @throws Version.VersionException when the version of the chunk is unsupported.
-     */
-    private static BlockDatabase _blockDB = BlockDatabase.getDatabase();
-
-    public Bitmap renderToBitmap(ChunkManager cm, Bitmap bm, Dimension dimension, int chunkX, int chunkZ, int bX, int bZ, int eX, int eZ, int pX, int pY, int pW, int pL) throws Version.VersionException {
-
-        Chunk chunk = cm.getChunk(chunkX, chunkZ);
-        Version cVersion = chunk.getVersion();
-
-        if(cVersion == Version.ERROR) return MapType.ERROR.renderer.renderToBitmap(cm, bm, dimension, chunkX, chunkZ, bX, bZ, eX, eZ, pX, pY, pW, pL);
-        if(cVersion == Version.NULL) return MapType.CHESS.renderer.renderToBitmap(cm, bm, dimension, chunkX, chunkZ, bX, bZ, eX, eZ, pX, pY, pW, pL);
-
-        //the bottom sub-chunk is sufficient to get heightmap data.
-        TerrainChunkData data = chunk.getTerrain((byte) 0);
-        if(data == null || !data.load2DData()) return MapType.CHESS.renderer.renderToBitmap(cm, bm, dimension, chunkX, chunkZ, bX, bZ, eX, eZ, pX, pY, pW, pL);
-
-        TerrainChunkData dataW = cm.getChunk(chunkX - 1, chunkZ).getTerrain((byte) 0);
-        TerrainChunkData dataN = cm.getChunk(chunkX, chunkZ-1).getTerrain((byte) 0);
-
-        boolean west = dataW != null && dataW.load2DData(),
-                north = dataN != null && dataN.load2DData();
-
-        int x, y, z, color, i, j, tX, tY, heightW, heightN;
-        for (z = bZ, tY = pY; z < eZ; z++, tY += pL) {
-            for (x = bX, tX = pX; x < eX; x++, tX += pW) {
-
-                y = data.getHeightMapValue(x, z);
-
-                heightW = (x == 0) ? (west ? dataW.getHeightMapValue(dimension.chunkW - 1, z) : y)//chunk edge
-                        : data.getHeightMapValue(x - 1, z);
-
-                heightN = (z == 0) ? (north ? dataN.getHeightMapValue(x, dimension.chunkL - 1) : y)//chunk edge
-                        : data.getHeightMapValue(x, z - 1);
-
-                color = getColumnColour(chunk, data, x, y, z,
-                        heightW,//within chunk
-                        heightN//within chunk
-                );
-
-                for (i = 0; i < pL; i++) {
-                    for (j = 0; j < pW; j++) {
-                        bm.setPixel(tX + j, tY + i, color);
-                    }
-                }
-            }
-        }
-        return bm;
-    }
-
     //calculate color of one column
-    private static int getColumnColour(Chunk chunk, TerrainChunkData floorData, int x, int y, int z, int heightW, int heightN) throws Version.VersionException {
-        float a = 1f;
-        float r = 0f;
-        float g = 0f;
-        float b = 0f;
+    static int getColumnColour(@NonNull Chunk chunk, int x, int y, int z, int heightW, int heightN) throws Version.VersionException {
+        float alphaRemain = 1f;
+        float finalR = 0f;
+        float finalG = 0f;
+        float finalB = 0f;
 
         // extract colour components as normalized doubles, from ARGB format
-        float biomeR = (float) (floorData.getGrassR(x, z) & 0xff) / 255f;
-        float biomeG = (float) (floorData.getGrassG(x, z) & 0xff) / 255f;
-        float biomeB = (float) (floorData.getGrassB(x, z) & 0xff) / 255f;
+        int grassColor = chunk.getGrassColor(x, z);
+        float biomeR = (float) Color.red(grassColor) / 255f;
+        float biomeG = (float) Color.green(grassColor) / 255f;
+        float biomeB = (float) Color.blue(grassColor) / 255f;
 
-        float blendR, blendG, blendB;
-        float blockA, blockR, blockG, blockB;
+        y--;
+        for (; y >= 0 && alphaRemain >= .1f; y--) {
 
-        Block block;
-        int id, meta;
+            Block block = chunk.getBlock(x, y, z, 0);
 
-        Version cVersion = chunk.getVersion();
-        int realY = y;
-        int offset = y % cVersion.subChunkHeight;
-        int subChunk = y / cVersion.subChunkHeight;
+            KnownBlockRepr legacyBlock = block.getLegacyBlock();
 
-        TerrainChunkData data;
+            if (legacyBlock == KnownBlockRepr.B_0_0_AIR) continue;//skip air blocks
 
-        subChunkLoop:
-        for (; subChunk >= 0; subChunk--) {
+            int color = block.getColor();
 
-            data = chunk.getTerrain((byte) subChunk);
-            if (data == null || !data.loadTerrain()) {
-                //start at the top of the next chunk! (current offset might differ)
-                offset = cVersion.subChunkHeight - 1;
-                continue;
+            // no need to process block if it is fully transparent
+            if (Color.alpha(color) == 0) continue;
+
+            float blendA = Color.alpha(color) / 255f;
+
+            // alpha blend and multiply
+            float blendR = alphaRemain * blendA * (Color.red(color) / 255f);
+            float blendG = alphaRemain * blendA * (Color.green(color) / 255f);
+            float blendB = alphaRemain * blendA * (Color.blue(color) / 255f);
+
+            //blend biome-colored blocks
+            if (legacyBlock.hasBiomeShading) {
+                blendR *= biomeR;
+                blendG *= biomeG;
+                blendB *= biomeB;
             }
 
-            for (y = offset; y >= 0; y--) {
-
-                id = data.getBlockTypeId(x, y, z) & 0xff;
-
-                if (id == 0) continue;//skip air blocks
-
-                meta = data.getBlockData(x, y, z) & 0xff;
-
-                // meta is 255 if the chunk version stores NBT keys rather than a single "val" meta tag
-                if(meta == 255) {
-                    Block tmpBlck = _blockDB.getBlock(id, 0);
-                    if(tmpBlck != null) {
-                        String keyVal = data.getBlockKeyValue(x, y, z, tmpBlck.metaKey);
-
-                        meta = tmpBlck.getMetaByKeyValue(keyVal);
-                    }
-                    else
-                    {
-                        Log.w("No meta key for block id " + id);
-
-                        id = data.getBlockTypeId(x, y, z) & 0xff;
-                    }
-
-                }
-
-                block = _blockDB.getBlock(id, meta);
-
-                //try the default meta value: 0
-                if (block == null) block = _blockDB.getBlock(id, 0);
-
-                //TODO log null blocks to debug missing blocks
-                if (block == null) {
-                    Log.w("UNKNOWN block: id: " + id + " meta: " + meta);
-                    continue;
-                }
-
-                // no need to process block if it is fully transparent
-                if (block.color == null || block.color.alpha == 0) continue;
-
-                blockR = block.color.red / 255f;
-                blockG = block.color.green / 255f;
-                blockB = block.color.blue / 255f;
-                blockA = block.color.alpha / 255f;
-
-                // alpha blend and multiply
-                blendR = a * blockA * blockR;
-                blendG = a * blockA * blockG;
-                blendB = a * blockA * blockB;
-
-                //blend biome-colored blocks
-                if (block.hasBiomeShading) {
-                    blendR *= biomeR;
-                    blendG *= biomeG;
-                    blendB *= biomeB;
-                }
-
-                r += blendR;
-                g += blendG;
-                b += blendB;
-                a *= 1f - blockA;
-
-                // break when an opaque block is encountered
-                if (block.color.alpha == 0xff) {
-                    break subChunkLoop;
-                }
-            }
-
-            //start at the top of the next chunk! (current offset might differ)
-            offset = cVersion.subChunkHeight - 1;
+            finalR += blendR;
+            finalG += blendG;
+            finalB += blendB;
+            alphaRemain *= 1f - blendA;
         }
-        //set y to the "real" y; consider all sub-chunks as a stack of chunks.
-        y = realY;
 
         //height shading (based on slopes in terrain; height diff)
         float heightShading = getHeightShading(y, heightW, heightN);
         //go back to "surface"
         y++;
-
-        TerrainChunkData surfaceChunk = chunk.getTerrain((byte) (y / cVersion.subChunkHeight));
         //light sources
-        int lightValue = (surfaceChunk != null && surfaceChunk.loadTerrain())
-                ? (surfaceChunk.getBlockLightValue(x, y % cVersion.subChunkHeight, z) & 0xff)
-                : 0;
+        int lightValue = chunk.getBlockLightValue(x, y, z) & 0xff;
         float lightShading = (float) lightValue / 15f + 1;
         //mix shading
         float shading = heightShading * lightShading;
@@ -206,15 +78,44 @@ public class SatelliteRenderer implements MapRenderer {
         //shading *= Math.max(Math.min(y / 40f, 1f), 0.2f);//shade ravines & caves, minimum *0.2 to keep some color
 
         // apply the shading
-        r = Math.min(Math.max(0f, r * shading), 1f);
-        g = Math.min(Math.max(0f, g * shading), 1f);
-        b = Math.min(Math.max(0f, b * shading), 1f);
+        finalR = Math.min(Math.max(0f, finalR * shading), 1f);
+        finalG = Math.min(Math.max(0f, finalG * shading), 1f);
+        finalB = Math.min(Math.max(0f, finalB * shading), 1f);
 
         // now we have our final RGB values as floats, convert to a packed ARGB pixel.
         return 0xff000000 |
-                ((((int) (r * 255f)) & 0xff) << 16) |
-                ((((int) (g * 255f)) & 0xff) << 8) |
-                (((int) (b * 255f)) & 0xff);
+                ((((int) (finalR * 255f)) & 0xff) << 16) |
+                ((((int) (finalG * 255f)) & 0xff) << 8) |
+                (((int) (finalB * 255f)) & 0xff);
+    }
+
+    public void renderToBitmap(Chunk chunk, Canvas canvas, Dimension dimension, int chunkX, int chunkZ, int pX, int pY, int pW, int pL, Paint paint, WorldData worldData) throws Version.VersionException {
+
+        Chunk dataW = worldData.getChunk(chunkX - 1, chunkZ, dimension);
+        Chunk dataN = worldData.getChunk(chunkX, chunkZ - 1, dimension);
+
+        boolean west = dataW != null && !dataW.isVoid(),
+                north = dataN != null && !dataN.isVoid();
+
+        for (int z = 0, tY = pY; z < 16; z++, tY += pL) {
+            for (int x = 0, tX = pX; x < 16; x++, tX += pW) {
+
+                int y = chunk.getHeightMapValue(x, z);
+                if (y == 0) continue;
+
+                int color = getColumnColour(chunk, x, y, z,
+                        (x == 0) ? (west ? dataW.getHeightMapValue(dimension.chunkW - 1, z) : y)//chunk edge
+                                : chunk.getHeightMapValue(x - 1, z),//within chunk
+                        (z == 0) ? (north ? dataN.getHeightMapValue(x, dimension.chunkL - 1) : y)//chunk edge
+                                : chunk.getHeightMapValue(x, z - 1)//within chunk
+                );
+                paint.setColor(color);
+                canvas.drawRect(new Rect(tX, tY, tX + pW, tY + pL), paint);
+
+
+            }
+        }
+
     }
 
     // shading Amp, possible range: [0, 2] (or use negative for reverse shading)

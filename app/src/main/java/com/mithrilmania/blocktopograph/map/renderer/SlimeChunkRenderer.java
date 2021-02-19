@@ -1,53 +1,50 @@
 package com.mithrilmania.blocktopograph.map.renderer;
 
-import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.Rect;
 
-import com.mithrilmania.blocktopograph.chunk.ChunkManager;
+import com.mithrilmania.blocktopograph.WorldData;
+import com.mithrilmania.blocktopograph.chunk.Chunk;
 import com.mithrilmania.blocktopograph.chunk.Version;
 import com.mithrilmania.blocktopograph.map.Dimension;
 import com.mithrilmania.blocktopograph.util.MTwister;
 
 
-
 public class SlimeChunkRenderer implements MapRenderer {
 
-    /**
-     * Render a single chunk to provided bitmap (bm)
-     * @param cm ChunkManager, provides chunks, which provide chunk-data
-     * @param bm Bitmap to render to
-     * @param dimension Mapped dimension
-     * @param chunkX X chunk coordinate (x-block coord / Chunk.WIDTH)
-     * @param chunkZ Z chunk coordinate (z-block coord / Chunk.LENGTH)
-     * @param bX begin block X coordinate, relative to chunk edge
-     * @param bZ begin block Z coordinate, relative to chunk edge
-     * @param eX end block X coordinate, relative to chunk edge
-     * @param eZ end block Z coordinate, relative to chunk edge
-     * @param pX texture X pixel coord to start rendering to
-     * @param pY texture Y pixel coord to start rendering to
-     * @param pW width (X) of one block in pixels
-     * @param pL length (Z) of one block in pixels
-     * @return bm is returned back
-     *
-     * @throws Version.VersionException when the version of the chunk is unsupported.
-     */
-    public Bitmap renderToBitmap(ChunkManager cm, Bitmap bm, Dimension dimension, int chunkX, int chunkZ, int bX, int bZ, int eX, int eZ, int pX, int pY, int pW, int pL) throws Version.VersionException {
+    public void renderToBitmap(Chunk chunk, Canvas canvas, Dimension dimension, int chunkX, int chunkZ, int pX, int pY, int pW, int pL, Paint paint, WorldData worldData) throws Version.VersionException {
 
-        int x, z, i, j, tX, tY;
+        int x, z, tX, tY;
 
-        MapType.OVERWORLD_SATELLITE.renderer.renderToBitmap(cm, bm, dimension, chunkX, chunkZ, bX, bZ, eX, eZ, pX, pY, pW, pL);
+        Chunk dataW = worldData.getChunk(chunkX - 1, chunkZ, dimension);
+        Chunk dataN = worldData.getChunk(chunkX, chunkZ - 1, dimension);
+
+        boolean west = dataW != null && !dataW.isVoid(),
+                north = dataN != null && !dataN.isVoid();
+
+        //MapType.OVERWORLD_SATELLITE.renderer.renderToBitmap(chunk, canvas, dimension, chunkX, chunkZ, pX, pY, pW, pL, paint, version, chunkManager);
 
         boolean isSlimeChunk = isSlimeChunk(chunkX, chunkZ);
         int color, r, g, b, avg;
 
         //make slimeChunks much more green
-        for (z = bZ, tY = pY ; z < eZ; z++, tY += pL) {
-            for (x = bX, tX = pX; x < eX; x++, tX += pW) {
-                color = bm.getPixel(tX, tY);
+        for (z = 0, tY = pY; z < 16; z++, tY += pL) {
+            for (x = 0, tX = pX; x < 16; x++, tX += pW) {
+
+                int y = chunk.getHeightMapValue(x, z);
+
+                color = SatelliteRenderer.getColumnColour(chunk, x, y, z,
+                        (x == 0) ? (west ? dataW.getHeightMapValue(dimension.chunkW - 1, z) : y)//chunk edge
+                                : chunk.getHeightMapValue(x - 1, z),//within chunk
+                        (z == 0) ? (north ? dataN.getHeightMapValue(x, dimension.chunkL - 1) : y)//chunk edge
+                                : chunk.getHeightMapValue(x, z - 1)//within chunk
+                );
                 r = (color >> 16) & 0xff;
                 g = (color >> 8) & 0xff;
                 b = color & 0xff;
                 avg = (r + g + b) / 3;
-                if(isSlimeChunk){
+                if (isSlimeChunk) {
                     r = b = avg;
                     g = (g + 0xff) >> 1;
                 } else {
@@ -55,25 +52,21 @@ public class SlimeChunkRenderer implements MapRenderer {
                 }
                 color = (color & 0xFF000000) | (r << 16) | (g << 8) | b;
 
-                for(i = 0; i < pL; i++){
-                    for(j = 0; j < pW; j++){
-                        bm.setPixel(tX + j, tY + i, color);
-                    }
-                }
+                paint.setColor(color);
+                canvas.drawRect(new Rect(tX, tY, tX + pW, tY + pL), paint);
 
             }
         }
 
-        return bm;
     }
 
 
     // See: https://gist.github.com/mithrilmania/00b85bf34a75fd8176342b1ad28bfccc
-    public static boolean isSlimeChunk(int cX, int cZ){
+    private static boolean isSlimeChunk(int cX, int cZ) {
         //
         // MCPE slime-chunk checker
         // From Minecraft: Pocket Edition 0.15.0 (0.15.0.50_V870150050)
-        // Reverse engineered by @mithrilmania and @jocopa3
+        // Reverse engineered by @protolambda and @jocopa3
         //
         // NOTE:
         // - The world-seed doesn't seem to be incorporated into the randomness, which is very odd.
@@ -82,7 +75,7 @@ public class SlimeChunkRenderer implements MapRenderer {
         // - Reverse engineering this code cost a lot of time,
         //   please add CREDITS when you are copying this.
         //   Copy the following into your program source:
-        //     MCPE slime-chunk checker; reverse engineered by @mithrilmania and @jocopa3
+        //     MCPE slime-chunk checker; reverse engineered by @protolambda and @jocopa3
         //
 
         // chunkX/Z are the chunk-coordinates, used in the DB keys etc.
@@ -119,7 +112,7 @@ public class SlimeChunkRenderer implements MapRenderer {
 
         // Multiply with 10 (3 bits)
         // ---> effect: the 3 bit randomness decrease expresses a 1 in a 10 chance.
-        long res = (((hi_shift3 + (hi_shift3 * 0x4)) & 0xffffffffL) * 0x2)  & 0xffffffffL;
+        long res = (((hi_shift3 + (hi_shift3 * 0x4)) & 0xffffffffL) * 0x2) & 0xffffffffL;
 
         // Final check: is the input equal to 10 times less random, but comparable, output.
         // Every chunk has a 1 in 10 chance to be a slime-chunk.

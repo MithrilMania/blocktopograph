@@ -12,7 +12,7 @@
             android:title="@string/select_world" />
         <item
             android:id="@+id/nav_singleplayer_nbt"
-            android:icon="@drawable/ic_person"
+            android:icon="@drawable/ic_person_black"
             android:title="@string/singleplayer_nbt" />
         <item
             android:id="@+id/nav_multiplayer_nbt"
@@ -82,6 +82,10 @@
                     android:id="@+id/nav_nether_map"
                     android:icon="@drawable/ic_action_map_b"
                     android:title="@string/map" />
+                <item
+                    android:id="@+id/nav_nether_biome"
+                    android:icon="@drawable/ic_bubble_chart"
+                    android:title="@string/biomes" />
                 <item
                     android:id="@+id/nav_nether_xray"
                     android:icon="@drawable/ic_visibility"
@@ -169,7 +173,7 @@
                     android:title="@string/autonomousentities_nbt" />
                 <item
                     android:id="@+id/nav_open_nbt_by_name"
-                    android:icon="@drawable/ic_action_search"
+                    android:icon="@drawable/ic_action_search_black"
                     android:title="@string/open_nbt_by_name" />
             </menu>
         </item>
