@@ -56,7 +56,7 @@ public class MarkerAsyncTask extends AsyncTask<Void, AbstractMarker, Void> {
             }
         }
         catch(Exception ex) {
-            Log.w(ex.getMessage());
+            Log.d(this, ex.getMessage());
         }
 
         return null;

@@ -597,7 +597,7 @@ public class EditorFragment extends Fragment {
 
                                                 Snackbar.make(view, "Saved NBT data!", Snackbar.LENGTH_LONG)
                                                         .setAction("Action", null).show();
-                                                Log.logFirebaseEvent(activity, Log.CustomFirebaseEvent.NBT_EDITOR_SAVE);
+                                                //Log.logFirebaseEvent(activity, Log.CustomFirebaseEvent.NBT_EDITOR_SAVE);
                                             } else {
                                                 Snackbar.make(view, "Error: failed to save the NBT data.", Snackbar.LENGTH_LONG)
                                                         .setAction("Action", null).show();

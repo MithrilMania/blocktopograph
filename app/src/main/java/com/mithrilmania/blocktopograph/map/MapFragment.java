@@ -112,8 +112,6 @@ public class MapFragment extends Fragment {
 
     }
 
-    private BlockDatabase _blockDB = BlockDatabase.getDatabase();
-
     //procedural markers can be iterated while other threads add things to it;
     // iterating performance is not really affected because of the small size;
     private CopyOnWriteArraySet<AbstractMarker> proceduralMarkers = new CopyOnWriteArraySet<>();
@@ -153,7 +151,7 @@ public class MapFragment extends Fragment {
         FragmentActivity activity = getActivity();
         if (activity == null) return;
         activity.setTitle(world.getWorldDisplayName());
-        Log.logFirebaseEvent(activity, Log.CustomFirebaseEvent.MAPFRAGMENT_OPEN);
+        //Log.logFirebaseEvent(activity, Log.CustomFirebaseEvent.MAPFRAGMENT_OPEN);
     }
 
     @Override
@@ -233,7 +231,7 @@ public class MapFragment extends Fragment {
             if (playerPos.dimension != worldProvider.getDimension()) {
                 worldProvider.changeMapType(playerPos.dimension.defaultMapType, playerPos.dimension);
             }
-            Log.logFirebaseEvent(activity, Log.CustomFirebaseEvent.GPS_LOCATE);
+            //Log.logFirebaseEvent(activity, Log.CustomFirebaseEvent.GPS_LOCATE);
 
             frameTo((double) playerPos.x, (double) playerPos.z);
 
@@ -273,7 +271,7 @@ public class MapFragment extends Fragment {
                 worldProvider.changeMapType(spawnPos.dimension.defaultMapType, spawnPos.dimension);
             }
 
-            Log.logFirebaseEvent(activity, Log.CustomFirebaseEvent.GPS_LOCATE);
+            //Log.logFirebaseEvent(activity, Log.CustomFirebaseEvent.GPS_LOCATE);
 
             frameTo((double) spawnPos.x, (double) spawnPos.z);
 
@@ -1009,7 +1007,7 @@ public class MapFragment extends Fragment {
             setUpSelectionMenu();
             Activity activity = getActivity();
             if (activity != null) {
-                Log.logFirebaseEvent(activity, Log.CustomFirebaseEvent.SELECTION);
+                //Log.logFirebaseEvent(activity, Log.CustomFirebaseEvent.SELECTION);
                 activity.getPreferences(Context.MODE_PRIVATE).edit()
                         .putBoolean(PREF_KEY_HAS_USED_SELECTION, true).apply();
             }
@@ -1563,7 +1561,7 @@ public class MapFragment extends Fragment {
                                             .setAction("Action", null).show();
 
                                     WorldActivityInterface worldProvider = owner.get().worldProvider.get();
-                                    Log.logFirebaseEvent(activity.get(), Log.CustomFirebaseEvent.GPS_LOCATE);
+                                    //Log.logFirebaseEvent(activity.get(), Log.CustomFirebaseEvent.GPS_LOCATE);
 
                                     if (playerPos.dimension != worldProvider.getDimension()) {
                                         worldProvider.changeMapType(playerPos.dimension.defaultMapType, playerPos.dimension);

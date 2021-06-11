@@ -3,6 +3,7 @@ package com.mithrilmania.blocktopograph.chunk.terrain;
 import com.mithrilmania.blocktopograph.chunk.Chunk;
 import com.mithrilmania.blocktopograph.chunk.ChunkData;
 import com.mithrilmania.blocktopograph.util.Noise;
+import com.mithrilmania.blocktopograph.map.BlockDatabase;
 
 
 public abstract class TerrainChunkData extends ChunkData {
@@ -21,6 +22,8 @@ public abstract class TerrainChunkData extends ChunkData {
     public final boolean hasNotFailed() {
         return mNotFailed;
     }
+
+    protected final BlockDatabase _blockDB;
 
     public abstract boolean loadTerrain();
 

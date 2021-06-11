@@ -11,6 +11,7 @@ public enum Version {
 
     ERROR("ERROR", "failed to retrieve version number", -2, 16, 16),
     NULL("NULL", "no data", -1, 16, 16),
+    OLD_LIMITED("v0.2.0", "classic mcpe, 16x16x16x16x18 world, level.dat; introduced in v0.2.0", 1, 128, 1),
     V0("V0", "Old format", 0, 16, 16),
     Beta_Palletted("v1.2.0", "Beta Palletted chunks", 1, 16, 16),
     v0_9("v0.9.0", "infinite xz, zlib leveldb; introduced in v0.9.0", 2, 128, 1),
@@ -63,11 +64,6 @@ public enum Version {
             //check if the returned version exists, fallback on ERROR otherwise.
             return version == null ? ERROR : version;
         }
-
-        Version version = versionMap.get(versionNumber);
-        //check if the returned version exists, fallback on ERROR otherwise.
-        return version == null ? ERROR : version;
-
     }
 
     @Nullable

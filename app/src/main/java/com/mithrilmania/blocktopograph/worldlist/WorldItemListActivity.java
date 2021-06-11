@@ -93,8 +93,8 @@ public class WorldItemListActivity extends AppCompatActivity {
     private void showFeedbackRequestDialogIfNeeded() {
         SharedPreferences prefs = getPreferences(MODE_PRIVATE);
         if (prefs.getInt(PREF_KEY_ACCEPT_DATA_USAGE, 0) == 1) {
-            Log.enableCrashlytics(this);
-            Log.enableFirebaseAnalytics(this);
+            //Log.enableCrashlytics(this);
+            //Log.enableFirebaseAnalytics(this);
             return;
         }
         AlertDialog dialog = new AlertDialog.Builder(this)
@@ -245,7 +245,7 @@ public class WorldItemListActivity extends AppCompatActivity {
                 type = 0;
         }
         params.putInt(Log.ANA_PARAM_MAINACT_MENU_TYPE, type);
-        Log.logFirebaseEvent(this, Log.CustomFirebaseEvent.MAINACT_MENU_OPEN, params);
+        //Log.logFirebaseEvent(this, Log.CustomFirebaseEvent.MAINACT_MENU_OPEN, params);
 
         //some text pop-up dialogs, some with simple HTML tags.
         switch (item.getItemId()) {

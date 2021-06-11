@@ -5,13 +5,13 @@ import android.os.Bundle;
 
 import androidx.annotation.NonNull;
 
-import com.crashlytics.android.Crashlytics;
-import com.google.firebase.analytics.FirebaseAnalytics;
+//import com.crashlytics.android.Crashlytics;
+//import com.google.firebase.analytics.FirebaseAnalytics;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-import io.fabric.sdk.android.Fabric;
+//import io.fabric.sdk.android.Fabric;
 
 public class Log {
 
@@ -23,7 +23,7 @@ public class Log {
 
     private static final String LOG_TAG = "Blocktopo";
 
-    private static FirebaseAnalytics mFirebaseAnalytics;
+    //private static FirebaseAnalytics mFirebaseAnalytics;
 
     private static PrintWriter mFileLogger;
 
@@ -38,13 +38,13 @@ public class Log {
     }
 
     public static void enableFirebaseAnalytics(@NonNull Context context) {
-        getFirebaseAnalytics(context).setAnalyticsCollectionEnabled(true);
+//        getFirebaseAnalytics(context).setAnalyticsCollectionEnabled(true);
         mIsFirebaseAnalyticsEnabled = true;
     }
 
     public static void enableCrashlytics(@NonNull Context context) {
         if (!BuildConfig.DEBUG) {
-            Fabric.with(context, new Crashlytics());
+            //Fabric.with(context, new Crashlytics());
             mIsCrashlyticsEnabled = true;
         }
     }
@@ -61,8 +61,8 @@ public class Log {
     }
 
     public static void e(@NonNull Object caller, @NonNull String msg) {
-        if (mIsCrashlyticsEnabled)
-            Crashlytics.log(android.util.Log.DEBUG, LOG_TAG, concat(caller, msg));
+        //if (mIsCrashlyticsEnabled)
+        //    Crashlytics.log(android.util.Log.DEBUG, LOG_TAG, concat(caller, msg));
     }
 
     public static void e(@NonNull Object caller, @NonNull Throwable throwable) {
@@ -70,10 +70,11 @@ public class Log {
         PrintWriter pw = new PrintWriter(sw);
         throwable.printStackTrace(pw);
         android.util.Log.e(LOG_TAG, concat(caller, sw.toString()));
-        if (mIsCrashlyticsEnabled) Crashlytics.logException(throwable);
+        //if (mIsCrashlyticsEnabled) Crashlytics.logException(throwable);
     }
-
+/*
     private synchronized static FirebaseAnalytics getFirebaseAnalytics(@NonNull Context context) {
+
         if (mFirebaseAnalytics == null) {
             mFirebaseAnalytics = FirebaseAnalytics.getInstance(context);
 
@@ -82,6 +83,7 @@ public class Log {
             //mFirebaseAnalytics.setAnalyticsCollectionEnabled(true);
         }
         return mFirebaseAnalytics;
+
     }
 
     public static void logFirebaseEvent(@NonNull Context context, @NonNull CustomFirebaseEvent firebaseEvent) {
@@ -93,7 +95,7 @@ public class Log {
         if (mIsFirebaseAnalyticsEnabled)
             getFirebaseAnalytics(context).logEvent(firebaseEvent.eventID, eventContent);
     }
-
+*/
     // Firebase events, these are meant to be as anonymous as possible,
     //  pure counters for usage analytics.
     // Do not remove! Removing analytics in a fork skews the results to the original userbase!

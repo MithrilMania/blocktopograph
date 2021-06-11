@@ -13,19 +13,18 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.ArrayList;
 
-public class TileEntity implements NamedBitmapProviderHandle, NamedBitmapProvider {
-
-    private static BlockDatabase _blockDB = BlockDatabase.getDatabase();
-
+public enum TileEntity implements NamedBitmapProviderHandle, NamedBitmapProvider
+{
     CHEST(0, "Chest", "Chest", ListingBlock.B_54_CHEST),
     TRAPPED_CHEST(1, "Trapped Chest", "TrappedChest", ListingBlock.B_146_TRAPPED_CHEST),
     ENDER_CHEST(2, "Ender Chest", "EnderChest", ListingBlock.B_130_ENDER_CHEST),
     MOB_SPAWNER(3, "Mob Spawner", "MobSpawner", ListingBlock.B_52_MOB_SPAWNER),
     END_PORTAL(4, "End Portal", "EndPortal", ListingBlock.B_119_END_PORTAL),
     BEACON(5, "Beacon", "Beacon", ListingBlock.B_138_BEACON);
+    private static BlockDatabase _blockDB = BlockDatabase.getDatabase();
 
     public static TileEntity END_PORTAL() {
-        return new TileEntity(4, "End Portal", "EndPortal", _blockDB.B_119_0_END_PORTAL());
+        return END_PORTAL;
     }
 
     private static final Map<String, TileEntity> tileEntityMap;

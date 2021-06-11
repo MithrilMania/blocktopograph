@@ -215,12 +215,14 @@ public class V1_2_Plus_TerrainChunkData extends TerrainChunkData {
     }
 
     @Override
-    public byte getBlockData(int x, int y, int z) {
+    public short getBlockData(int x, int y, int z) {
         if (x >= chunkW || y >= chunkH || z >= chunkL || x < 0 || y < 0 || z < 0) {
             return 0;
         }
         return (byte) (getBlockState(x, y, z) & 0xf);
     }
+
+    public String getBlockKeyValue(int x, int y, int z, String key) { return ""; }
 
     @Override
     public byte getSkyLightValue(int x, int y, int z) {
