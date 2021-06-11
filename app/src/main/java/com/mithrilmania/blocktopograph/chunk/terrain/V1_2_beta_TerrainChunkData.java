@@ -4,7 +4,7 @@ import com.mithrilmania.blocktopograph.WorldData;
 import com.mithrilmania.blocktopograph.chunk.Chunk;
 import com.mithrilmania.blocktopograph.chunk.ChunkTag;
 import com.mithrilmania.blocktopograph.map.Biome;
-import com.mithrilmania.blocktopograph.map.Block;
+import com.mithrilmania.blocktopograph.block.Block;
 import com.mithrilmania.blocktopograph.nbt.convert.DataConverter;
 import com.mithrilmania.blocktopograph.nbt.tags.CompoundTag;
 import com.mithrilmania.blocktopograph.nbt.tags.Tag;
@@ -15,6 +15,7 @@ import java.nio.ByteOrder;
 import java.util.ArrayList;
 
 /*
+* NOTE:oO0oO0oO0o0o00's changes make this class obsolete. Keeping it commented for posterity.
 * Beta palleted chunk format.
 * This version was not used very long; it was introduced around the first Update Aquatic and replaced
 * around the second.
@@ -30,6 +31,8 @@ import java.util.ArrayList;
 * With 4096 blocks per chunk, there will never be more than 4096 entries, so the maximum specified value (16) will be sufficient.
 * See https://gist.github.com/Tomcc/a96af509e275b1af483b25c543cfbf37 for further details.
  */
+
+/*
 public class V1_2_beta_TerrainChunkData extends TerrainChunkData {
     public volatile ByteBuffer terrainData, data2D;
 
@@ -334,10 +337,11 @@ public class V1_2_beta_TerrainChunkData extends TerrainChunkData {
     public boolean supportsBlockLightValues() {
         return false;
     }
-
+*/
     /**
      * Sets a block type, and also set the corresponding dirty table entry and set the saving flag.
      */
+/*
     @Override
     public void setBlockTypeId(int x, int y, int z, int type) {
         if (x >= chunkW || y >= chunkH || z >= chunkL || x < 0 || y < 0 || z < 0) {
@@ -371,8 +375,11 @@ public class V1_2_beta_TerrainChunkData extends TerrainChunkData {
     }
 
     private int getNoise(int base, int x, int z){
+
+        */
         // noise values are between -1 and 1
         // 0.0001 is added to the coordinates because integer values result in 0
+        /*
         double oct1 = Noise.noise(
                 ((double) (this.chunk.x * chunkW + x) / 100.0) + 0.0001,
                 ((double) (this.chunk.z * chunkL + z) / 100.0) + 0.0001);
@@ -384,12 +391,12 @@ public class V1_2_beta_TerrainChunkData extends TerrainChunkData {
                 ((double) (this.chunk.z * chunkL + z) / 3.0) + 0.0001);
         return (int) (base + 60 + (40 * oct1) + (14 * oct2) + (6 * oct3));
     }
-
+*/
     /*
         MCPE 1.0 stopped embedding foliage color data in the chunk data,
          so now we fake the colors by combining biome colors with Perlin noise
      */
-
+/*
     @Override
     public byte getGrassR(int x, int z) {
         Biome biome = Biome.getBiome(getBiome(x, z) & 0xff);
@@ -430,3 +437,4 @@ public class V1_2_beta_TerrainChunkData extends TerrainChunkData {
         return ((h & 0xff) << 8) | ((h >> 8) & 0xff);//little endian to big endian
     }
 }
+*/

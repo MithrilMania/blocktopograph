@@ -122,14 +122,14 @@ public class SelectionMenuFragment extends FloatPaneFragment {
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
         dialog.show();
-        Log.logFirebaseEvent(view.getContext(), Log.CustomFirebaseEvent.SNR_OPEN);
+        //Log.logFirebaseEvent(view.getContext(), Log.CustomFirebaseEvent.SNR_OPEN);
     }
 
     private void onChooseSnr(View view) {
         SearchAndReplaceFragment fragment = SearchAndReplaceFragment.newInstance(registry, mEditFunctionEntry);
         FragmentManager fragmentManager = getMeowFragmentManager();
         fragment.show(fragmentManager, TAG_SNR);
-        Log.logFirebaseEvent(view.getContext(), Log.CustomFirebaseEvent.SNR_OPEN);
+        //Log.logFirebaseEvent(view.getContext(), Log.CustomFirebaseEvent.SNR_OPEN);
     }
 
     private void onChooseDchunk(View view) {
@@ -145,14 +145,14 @@ public class SelectionMenuFragment extends FloatPaneFragment {
                 .setNegativeButton(android.R.string.cancel, null)
                 .create();
         dialog.show();
-        Log.logFirebaseEvent(view.getContext(), Log.CustomFirebaseEvent.DCHUNK);
+        //Log.logFirebaseEvent(view.getContext(), Log.CustomFirebaseEvent.DCHUNK);
     }
 
     private void onChooseChbiome(View view) {
         ChBiomeFragment fragment = ChBiomeFragment.newInstance(mEditFunctionEntry);
         FragmentManager fragmentManager = getMeowFragmentManager();
         fragment.show(fragmentManager, TAG_CHBIOME);
-        Log.logFirebaseEvent(view.getContext(), Log.CustomFirebaseEvent.CH_BIOME);
+        //Log.logFirebaseEvent(view.getContext(), Log.CustomFirebaseEvent.CH_BIOME);
     }
 
     private void onChoosePicer(View view) {
