@@ -6,6 +6,7 @@ import android.graphics.BitmapFactory;
 
 import androidx.annotation.NonNull;
 
+import com.mithrilmania.blocktopograph.Log;
 import com.mithrilmania.blocktopograph.util.NamedBitmapProvider;
 import com.mithrilmania.blocktopograph.util.NamedBitmapProviderHandle;
 
@@ -73,7 +74,7 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     GUARDIAN(49, "Guardian", new String[]{"Guardian", "guardian"}, "guardian", 87),
     ELDER_GAURDIAN(50, "Elder Gaurdian", new String[]{"ElderGaurdian", "elder-guardian", "elderguardian"}, "elder-gaurdian", 88),
     NPC(51, "NPC", new String[]{"Npc", "npc"}, "npc", 100),
-    WITHER_BOSS(52, "Wither Boss", new String[]{"WitherBoss", "witherboss", "blue-wither-skull"}, "blue-wither-skull", 72),
+    WITHER_BOSS(52, "Wither Boss", new String[]{"WitherBoss", "witherboss", "blue-wither-skull", "wither-skull-dangerous", "wither_skull_dangerous"}, "blue-wither-skull", 72),
     ENDER_DRAGON(53, "Ender Dragon", new String[]{"EnderDragon", "ender-dragon", "enderdragon"}, "ender-dragon", 29),
     SHULKER(54, "Shulker", new String[]{"Shulker", "shukler", "shulker"}, "shulker", 30),
     ENDERMITE(55, "Endermite", new String[]{"Endermite", "endermite"}, "endermite", 86),
@@ -86,12 +87,12 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     //61
     CAMERA(62, "Tripod Camera", new String[]{"TripodCamera", "camera"}, "camera", 144),
     PLAYER(63, "Player", new String[]{"Player", "player"}, "player", 8),
-    ITEM(64, "Dropped Item", new String[]{"ItemEntity", "item"}, "item", -1),//do not render items
+    ITEM(64, "Dropped Item", new String[]{"ItemEntity", "item"}, "item", 470),//do not render items
     PRIMED_TNT(65, "Primed TNT", new String[]{"PrimedTnt", "primedtnt", "primed-tnt"}, "primed-tnt", 49),
     FALLING_SAND(66, "Falling Block", new String[]{"FallingBlock", "falling-sand", "fallingblock"}, "falling-sand", 50),
     ITEM_FRAME(67, "Item Frame", new String[]{"ItemFrame", "itemframe", "empty-item-frame"}, "empty-item-frame", 66),//67 ; ItemFrame is not yet in the game
     THROWN_EXP_BOTTLE(68, "Bottle o' Enchanting", new String[]{"ThrownExpBottle", "ExperiencePotion", "thrownexpbottle"}, "ThrownExpBottle", 56),
-    XP_ORB(69, "Experience Orb", new String[]{"XPOrb", "ExperienceOrb", "experience-orb", "experienceorb", "xp_orb"}, "experience-orb", 59),
+    XP_ORB(69, "Experience Orb", new String[]{"XPOrb", "ExperienceOrb", "experience-orb", "experienceorb", "xp_orb"}, "experience-orb", 454),
     EYE_OF_ENDER_SIGNAL(70, "Eye of Ender", new String[]{"EyeOfEnderSignal", "eyeofendersignal", "eye-of-ender"}, "eye-of-ender", 47),
     ENDER_CRYSTAL(71, "Ender Crystal", new String[]{"EnderCrystal", "endercrystal", "ender-crystal"}, "ender-crystal", 52),
     //72
@@ -145,8 +146,11 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     THROWNTRIDENT(114, "ThrownTrident", new String[]{"thrown_trident"}, "throwntrident", 124),
     UNKNOWN(999, "Unknown", new String[]{"Unknown", "unknown"}, "unknown", 144),
 
-    CAT(122, "Cat", new String[]{"Cat"}, "cat", 142),//95 ; FireworksRocketEntity is not in the game yet
-    PANDA(123, "Panda", new String[]{"Panda"}, "panda", 136);//95 ; FireworksRocketEntity is not in the game yet
+    FOX(124, "Fox", new String[] {"fox", "Fox"}, "fox", 280),
+    AXOLOTL(125, "Axolotl", new String[]{"Axolotl", "axolotl"}, "axolotl", 488),
+    GLOWSQUID(126, "GlowSquid", new String[] {"glowsquid", "Glowsquid", "glow_squid"}, "glowsquid", 423),
+    CAT(122, "Cat", new String[]{"Cat"}, "cat", 142),
+    PANDA(123, "Panda", new String[]{"Panda"}, "panda", 136);
 
 
     public final int id, sheetPos;
@@ -198,18 +202,21 @@ public enum Entity implements NamedBitmapProviderHandle, NamedBitmapProvider {
     public static Entity getEntity(@NonNull String identifier) {
         int i = identifier.indexOf(':');
         if (i != -1) {
-            if (!"minecraft".equals(identifier.substring(0, i))) return Entity.UNKNOWN;
+            if (!"minecraft".equals(identifier.substring(0, i)))
+                return Entity.UNKNOWN;
             identifier = identifier.substring(i + 1);
         }
         for (Entity e : Entity.values()) {
             if (identifier.equals(e.wikiName)) return e;
         }
-        identifier = identifier.replace("_", "");
+
         for (Entity e : Entity.values()) {
             for (String dataName : e.dataNames)
                 if (dataName.toLowerCase().equals(identifier))
                     return e;
         }
+
+        Log.d(Entity.UNKNOWN, "error finding id for entity " + identifier);
         return Entity.UNKNOWN;
     }
 
