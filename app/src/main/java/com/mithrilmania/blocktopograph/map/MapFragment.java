@@ -1598,8 +1598,8 @@ public class MapFragment extends Fragment {
         protected Void doInBackground(Object... params) {
             long minX = (long) params[0],
                     maxX = (long) params[1],
-                    minY = (long) params[2],
-                    maxY = (long) params[3];
+                    minZ = (long) params[2],
+                    maxZ = (long) params[3];
             Dimension reqDim = (Dimension) params[4];
 
             CopyOnWriteArraySet<AbstractMarker> proceduralMarkers = owner.get().proceduralMarkers;
@@ -1609,7 +1609,7 @@ public class MapFragment extends Fragment {
                 // do not remove static markers
                 if (owner.get().staticMarkers.contains(p)) continue;
 
-                if (p.x < minX || p.x > maxX || p.y < minY || p.y > maxY || p.dimension != reqDim) {
+                if (p.x < minX || p.x > maxX || p.z < minZ || p.z > maxZ || p.dimension != reqDim) {
                     this.publishProgress(p);
                 }
             }
